@@ -5,4 +5,4 @@ yarn build
 popd || exit
 
 sudo docker build . -t umbreonserver
-sudo docker run umbreonserver
+sudo docker run umbreonserver:latest

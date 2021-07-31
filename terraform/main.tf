@@ -13,3 +13,7 @@ provider "aws" {
   profile = "default"
   region = "eu-west-1"
 }
+
+resource aws_ecr_repository "umbreon_ecr" {
+  name = "umbreon_ecr_repository"
+}

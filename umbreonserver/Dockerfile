@@ -3,7 +3,7 @@ FROM golang:alpine
 MAINTAINER TheDuckGoesQuark
 
 ENV GIN_MODE=release
-ENV PORT=3004
+ENV PORT=3000
 
 WORKDIR /go/src/umbreonserver
 

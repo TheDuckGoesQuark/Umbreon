@@ -1,10 +1,11 @@
 package main
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
@@ -18,7 +19,7 @@ func main() {
 	api := router.Group("/api")
 	{
 		api.GET("/", func(c *gin.Context) {
-			c.JSON(http.StatusOK, gin.H {
+			c.JSON(http.StatusOK, gin.H{
 				"message": "pong",
 			})
 		})
@@ -30,21 +31,25 @@ func main() {
 	api.POST("/jokes/like/:jokeID", LikeJoke)
 
 	// Start and run the server
-	router.Run(":3000")
+	port := os.Getenv("PORT")
+	err := router.Run(":" + port)
+	if err != nil {
+		log.Println("Error when starting server: " + err.Error())
+	}
 }
 
 // JokeHandler retrieves a list of available jokes
 func JokeHandler(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, gin.H {
-		"message":"Jokes handler not implemented yet",
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Jokes handler not implemented yet",
 	})
 }
 
 // LikeJoke increments the likes of a particular joke Item
 func LikeJoke(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
-	c.JSON(http.StatusOK, gin.H {
-		"message":"LikeJoke handler not implemented yet",
+	c.JSON(http.StatusOK, gin.H{
+		"message": "LikeJoke handler not implemented yet",
 	})
 }

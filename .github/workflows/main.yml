@@ -41,7 +41,7 @@ jobs:
         working-directory: ./umbreonwebclient
         run: |
           yarn --frozen-lockfile
-          yarn build
+          BUILD_PATH=../umbreonserver/assets yarn build
 
       - uses: actions-rs/toolchain@v1
         with:

@@ -6,7 +6,7 @@ popd || exit
 
 pushd ../umbreonbot || exit
 cross build --release --target armv5te-unknown-linux-gnueabi
-mv target/armv5te-unknown-linux-gnueabi/release/umbreonbot ../umbreonserver/assets/
+cp target/armv5te-unknown-linux-gnueabi/release/umbreonbot ../umbreonserver/assets/
 popd || exit
 
 echo "Building docker image"

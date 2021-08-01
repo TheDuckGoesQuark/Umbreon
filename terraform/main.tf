@@ -16,4 +16,13 @@ provider "aws" {
 
 resource aws_ecr_repository "umbreon_ecr" {
   name = "umbreon_ecr_repository"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
+
+output "umbreon_ecr_name" {
+  value = aws_ecr_repository.umbreon_ecr.name
 }

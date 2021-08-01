@@ -31,10 +31,6 @@ jobs:
           rustup target add armv5te-unknown-linux-gnueabi
           cross build --release --target armv5te-unknown-linux-gnueabi
 
-      - name: Check it worked
-        working-directory: ./umbreonbot
-        run: ls -l -a ./target/armv5te-unknown-linux-gnueabi/release/umbreon
-
       - name: Get yarn cache directory path
         working-directory: ./umbreonwebclient
         id: yarn-cache-dir-path
@@ -59,6 +55,10 @@ jobs:
         run: |
           yarn --frozen-lockfile
           yarn build
+
+      - name: Move umbreon bot code to static files
+        working-directory: ./umbreonbot
+        run: mv target/armv5te-unknown-linux-gnueabi/release/umbreon ../umbreonserver/assets
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1

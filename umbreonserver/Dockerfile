@@ -4,6 +4,7 @@ MAINTAINER TheDuckGoesQuark
 
 ENV GIN_MODE=release
 ENV PORT=3000
+ENV BOT_CODE_VERSION=1
 
 WORKDIR /go/src/umbreonserver
 

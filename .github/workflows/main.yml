@@ -18,19 +18,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: armv5te-unknown-linux-gnueabi
-          override: true
-
-      - name: Compile umbreonbot
-        working-directory: ./umbreonbot
-        run: |
-          cargo install cross
-          rustup target add armv5te-unknown-linux-gnueabi
-          cross build --release --target armv5te-unknown-linux-gnueabi
-
       - name: Get yarn cache directory path
         working-directory: ./umbreonwebclient
         id: yarn-cache-dir-path
@@ -55,6 +42,19 @@ jobs:
         run: |
           yarn --frozen-lockfile
           yarn build
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: armv5te-unknown-linux-gnueabi
+          override: true
+
+      - name: Compile umbreonbot
+        working-directory: ./umbreonbot
+        run: |
+          cargo install cross
+          rustup target add armv5te-unknown-linux-gnueabi
+          cross build --release --target armv5te-unknown-linux-gnueabi
 
       - name: Move umbreon bot code to static files
         working-directory: ./umbreonbot

@@ -3,6 +3,8 @@ extern crate ev3dev_lang_rust;
 use ev3dev_lang_rust::Ev3Result;
 use ev3dev_lang_rust::motors::{LargeMotor, MotorPort, MediumMotor};
 use ev3dev_lang_rust::sensors::ColorSensor;
+use std::thread::sleep;
+use std::time::Duration;
 
 fn main() -> Ev3Result<()> {
 
@@ -23,6 +25,10 @@ fn main() -> Ev3Result<()> {
 
     // Get current rgb color tuple.
     println!("Current rgb color: {:?}", color_sensor.get_rgb()?);
+
+   sleep(Duration::from_secs(3))?;
+
+    large_motor.stop()?;
 
     Ok(())
 }

@@ -23,7 +23,7 @@ function should_download() {
 
 function download_latest() {
   next_version=$1
-  curl https://umbreon.lol/bot/download -o umbreonbot
+  curl https://umbreon.lol/bot/download > umbreonbot
   chmod +x umbreonbot
   echo "$next_version" > $VERSION_FILE
 }

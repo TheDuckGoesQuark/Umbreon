@@ -17,6 +17,7 @@ function App() {
         >
           Learn React
         </a>
+        <p>Git SHA: {process.env.REACT_APP_GIT_SHA}</p>
       </header>
     </div>
   );

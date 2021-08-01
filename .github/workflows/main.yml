@@ -26,7 +26,10 @@ jobs:
 
       - name: Compile umbreonbot
         working-directory: ./umbreonbot
-        run: cross build --release --target armv5te-unknown-linux-gnueabi
+        run: |
+          cargo install cross
+          rustup target add armv5te-unknown-linux-gnueabi
+          cross build --release --target armv5te-unknown-linux-gnueabi
 
       - name: Check it worked
         working-directory: ./umbreonbot

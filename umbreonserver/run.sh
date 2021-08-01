@@ -1,7 +1,7 @@
 #!/bin/bash
 
 pushd ../umbreonwebclient || exit
-BUILD_PATH=../umbreonserver/assets yarn build
+yarn build
 popd || exit
 
 pushd ../umbreonbot || exit

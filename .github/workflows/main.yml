@@ -39,9 +39,11 @@ jobs:
       - name: Install web dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true' # Over here!
         working-directory: ./umbreonwebclient
-        run: |
-          yarn --frozen-lockfile
-          BUILD_PATH=../umbreonserver/assets yarn build
+        run: yarn --frozen-lockfile
+
+      - name: Build web
+        working-directory: ./umbreonwebclient
+        run: yarn build
 
       - uses: actions-rs/toolchain@v1
         with:
@@ -59,9 +61,6 @@ jobs:
       - name: Move umbreon bot code to static files
         working-directory: ./umbreonbot
         run: |
-          ls -a -l target/armv5te-unknown-linux-gnueabi/release/umbreonbot
-          ls -a -l ../umbreonserver
-          ls -a -l ../umbreonserver/assets
           mv target/armv5te-unknown-linux-gnueabi/release/umbreonbot ../umbreonserver/assets/
 
       - name: Configure AWS credentials

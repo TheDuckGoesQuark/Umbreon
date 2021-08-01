@@ -26,8 +26,10 @@ jobs:
 
       - uses: actions-rs/cargo@v1
         name: Cross compile umbreon bot
-        working-directory: ./umbreonbot
-        run: cross build --release --target armv5te-unknown-linux-gnueabi
+        with:
+          use-cross: true
+          command: build
+          args: --release --target armv7-unknown-linux-gnueabihf --manifest-path umbreonbot/Cargo.toml
 
       - name: Check it worked
         working-directory: ./umbreonbot

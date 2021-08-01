@@ -60,6 +60,7 @@ jobs:
           terraform_wrapper: false
 
       - name: Terraform Init
+        working-directory: ./terraform
         id: init
         run: terraform init
 
@@ -94,6 +95,7 @@ jobs:
             })
 
       - name: Terraform Apply
+        working-directory: ./terraform
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
 

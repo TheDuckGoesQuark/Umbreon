@@ -58,7 +58,11 @@ jobs:
 
       - name: Move umbreon bot code to static files
         working-directory: ./umbreonbot
-        run: mv target/armv5te-unknown-linux-gnueabi/release/umbreonbot ../umbreonserver/assets/
+        run: |
+          ls -a -l target/armv5te-unknown-linux-gnueabi/release/umbreonbot
+          ls -a -l ../umbreonserver
+          ls -a -l ../umbreonserver/assets
+          mv target/armv5te-unknown-linux-gnueabi/release/umbreonbot ../umbreonserver/assets/
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1

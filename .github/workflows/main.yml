@@ -86,4 +86,4 @@ jobs:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: umbreon-service
           cluster: umbreon-cluster
-          wait-for-service-stability: true
+          wait-for-service-stability: false

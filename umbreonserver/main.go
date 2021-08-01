@@ -42,7 +42,7 @@ func main() {
 func JokeHandler(c *gin.Context) {
 	c.Header("Content-Type", "application/json")
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Jokes handler not implemented yet",
+		"message": "Jokes handler not implemented yet but this good to see",
 	})
 }
 

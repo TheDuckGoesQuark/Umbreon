@@ -24,11 +24,12 @@ jobs:
           target: armv5te-unknown-linux-gnueabi
           override: true
 
-      - name: Cross compile umbreon bot
+      - uses: actions-rs/cargo@v1
+        name: Cross compile umbreon bot
         working-directory: ./umbreonbot
         run: cross build --release --target armv5te-unknown-linux-gnueabi
 
-      - name: Cross compile umbreon bot
+      - name: Check it worked
         working-directory: ./umbreonbot
         run: ls -l -a ./target/armv5te-unknown-linux-gnueabi/release/umbreon
 

@@ -39,3 +39,7 @@ output "ecs_service" {
 output "ecs_cluster" {
   value       = aws_ecs_cluster.umbreon_cluster.name
 }
+
+output "container_name" {
+  value = aws_ecs_task_definition.umbreon_ecs_task.family
+}

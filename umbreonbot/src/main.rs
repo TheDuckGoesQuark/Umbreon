@@ -1,13 +1,13 @@
 extern crate ev3dev_lang_rust;
 
 use ev3dev_lang_rust::Ev3Result;
-use ev3dev_lang_rust::motors::{LargeMotor, MotorPort};
+use ev3dev_lang_rust::motors::{LargeMotor, MotorPort, MediumMotor};
 use ev3dev_lang_rust::sensors::ColorSensor;
 
 fn main() -> Ev3Result<()> {
 
     // Get large motor on port outA.
-    let large_motor = LargeMotor::get(MotorPort::OutA)?;
+    let large_motor = LargeMotor::get(MotorPort::OutD)?;
 
     // Set command "run-direct".
     large_motor.run_direct()?;

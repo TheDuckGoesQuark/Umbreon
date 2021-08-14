@@ -9,6 +9,7 @@ import (
 const (
 	getUserById    = "select userId, email, encryptedPassword from botusers where id=$1"
 	getUserByEmail = "select userId, email, encryptedPassword from botusers where email=$1"
+	insertUser = "insert into botusers(userId, email, encryptedPassword) values ()"
 )
 
 type GetUserByIdQuery struct {
@@ -21,7 +22,8 @@ type GetUserByEmailQuery struct {
 	email string
 }
 
-type InsertUser struct {
+type InsertUserQuery struct {
+	query string
 	user *models.User
 }
 
@@ -47,6 +49,20 @@ func (g GetUserByEmailQuery) executeQuery(pool *pgxpool.Pool) (*models.User, err
 }
 
 func NewGetUserByEmailQuery(email string) *GetUserByEmailQuery {
+	return &GetUserByEmailQuery{
+		query: getUserByEmail,
+		email: email,
+	}
+}
+
+func (g InsertUserQuery) executeQuery(pool *pgxpool.Pool) (*models.User, error) {
+	var result models.User
+	err := pool.QueryRow(context.Background(), g.query, g.email).Scan(
+		&result.UserId, &result.Email, &result.EncryptedPassword)
+	return &result, err
+}
+
+func NewInsertUserQuery(email string) *GetUserByEmailQuery {
 	return &GetUserByEmailQuery{
 		query: getUserByEmail,
 		email: email,

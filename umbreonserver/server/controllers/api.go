@@ -16,6 +16,6 @@ func NewApiController(config *ControllerConfig) *ApiController {
 func (a ApiController) ConfigureRouter(router *gin.Engine) {
 	api := router.Group("/api")
 
-	api.GET("/", handlers.PingHandler)
+	api.GET("/", a.config.AuthMiddleware, handlers.PingHandler)
 }
 

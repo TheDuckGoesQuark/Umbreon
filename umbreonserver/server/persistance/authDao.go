@@ -26,6 +26,7 @@ func (dao *PostgresAuthDao) getUserByEmail(email string) (*models.User, error) {
 }
 
 func (dao *PostgresAuthDao) addUser(user models.User) (*models.User, error) {
-	panic("implement me")
+	query := NewInsertUserQuery(&user)
+	return query.executeQuery(dao.pool)
 }
 

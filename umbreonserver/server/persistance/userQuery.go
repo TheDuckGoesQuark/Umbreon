@@ -7,9 +7,9 @@ import (
 )
 
 const (
-	getUserById    = "select userId, email, encryptedPassword from botusers where id=$1"
-	getUserByEmail = "select userId, email, encryptedPassword from botusers where email=$1"
-	insertUser = "insert into botusers(userId, email, encryptedPassword) values ()"
+	getUserById    = "SELECT userId, email, encryptedPassword FROM botusers WHERE id=$1"
+	getUserByEmail = "SELECT userId, email, encryptedPassword FROM botusers WHERE email=$1"
+	insertUser     = "INSERT INTO botusers (email, encryptedPassword) VALUES ($1, $2) RETURNING userId"
 )
 
 type GetUserByIdQuery struct {
@@ -24,12 +24,12 @@ type GetUserByEmailQuery struct {
 
 type InsertUserQuery struct {
 	query string
-	user *models.User
+	user  *models.User
 }
 
-func (g GetUserByIdQuery) executeQuery(pool *pgxpool.Pool) (*models.User, error) {
+func (query GetUserByIdQuery) executeQuery(pool *pgxpool.Pool) (*models.User, error) {
 	var result models.User
-	err := pool.QueryRow(context.Background(), g.query, g.userId).Scan(
+	err := pool.QueryRow(context.Background(), query.query, query.userId).Scan(
 		&result.UserId, &result.Email, &result.EncryptedPassword)
 	return &result, err
 }
@@ -41,9 +41,9 @@ func NewGetUserByIdQuery(userId string) *GetUserByIdQuery {
 	}
 }
 
-func (g GetUserByEmailQuery) executeQuery(pool *pgxpool.Pool) (*models.User, error) {
+func (query GetUserByEmailQuery) executeQuery(pool *pgxpool.Pool) (*models.User, error) {
 	var result models.User
-	err := pool.QueryRow(context.Background(), g.query, g.email).Scan(
+	err := pool.QueryRow(context.Background(), query.query, query.email).Scan(
 		&result.UserId, &result.Email, &result.EncryptedPassword)
 	return &result, err
 }
@@ -55,16 +55,16 @@ func NewGetUserByEmailQuery(email string) *GetUserByEmailQuery {
 	}
 }
 
-func (g InsertUserQuery) executeQuery(pool *pgxpool.Pool) (*models.User, error) {
-	var result models.User
-	err := pool.QueryRow(context.Background(), g.query, g.email).Scan(
-		&result.UserId, &result.Email, &result.EncryptedPassword)
-	return &result, err
+func (query InsertUserQuery) executeQuery(pool *pgxpool.Pool) (*models.User, error) {
+	result := query.user
+	err := pool.QueryRow(context.Background(), query.query, query.user.Email, query.user.EncryptedPassword).Scan(
+		&result.UserId)
+	return result, err
 }
 
-func NewInsertUserQuery(email string) *GetUserByEmailQuery {
-	return &GetUserByEmailQuery{
-		query: getUserByEmail,
-		email: email,
+func NewInsertUserQuery(user *models.User) *InsertUserQuery {
+	return &InsertUserQuery{
+		query: insertUser,
+		user:  user,
 	}
 }

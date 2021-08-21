@@ -10,10 +10,15 @@ type Controller interface {
 
 type ControllerConfig struct {
 	GroupPrefix string
+	AuthMiddleware gin.HandlerFunc
 }
 
 func NewControllerConfig(groupPrefix string) *ControllerConfig {
 	return &ControllerConfig{GroupPrefix: groupPrefix}
+}
+
+func NewAuthControllerConfig(groupPrefix string, authMiddleware gin.HandlerFunc) *ControllerConfig {
+	return &ControllerConfig{GroupPrefix: groupPrefix, AuthMiddleware: authMiddleware}
 }
 
 

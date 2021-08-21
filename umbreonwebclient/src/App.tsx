@@ -1,43 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
-import {useAuth0} from "@auth0/auth0-react";
-import Profile from "./Profile";
+import {Route, Switch, BrowserRouter, Redirect} from 'react-router-dom';
+import {Login} from "./pages/login";
+import React from "react";
+import {Auth0, ProtectedRoute} from "./auth0/auth0";
+import Profile from "./pages/profile";
 
 function App() {
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-                <p>Git SHA: {process.env.REACT_APP_GIT_SHA}</p>
-                <LoginButton/>
-                <LogoutButton/>
-                <Profile/>
-            </header>
-        </div>
-    );
+        <BrowserRouter>
+            <Auth0>
+                <Switch>
+                    {ProtectedRoutes()}
+                    {UnprotectedRoutes()}
+                </Switch>
+            </Auth0>
+        </BrowserRouter>
+    )
 }
 
-const LoginButton = () => {
-    const {loginWithRedirect} = useAuth0();
-
-    return <button onClick={() => loginWithRedirect()}>Log In</button>
+const UnprotectedRoutes = () => {
+    return [
+        <Route exact path="/" component={Login} />,
+        <Route exact path="/logout" component={() => <Redirect to={"/"}/>}/>,
+    ]
 }
 
-const LogoutButton = () => {
-    const {logout} = useAuth0();
-
-    return <button onClick={() => logout({returnTo: `${window.location.origin}/logout`})}>Log Out</button>
+const ProtectedRoutes = () => {
+    return [
+        <ProtectedRoute exact path="/login" component={Profile}/>,
+        <ProtectedRoute exact path="/profile" component={Profile}/>,
+    ]
 }
 
 export default App;

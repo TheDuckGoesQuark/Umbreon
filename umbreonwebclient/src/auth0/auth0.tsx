@@ -1,12 +1,13 @@
-import {AppState, Auth0Provider, useAuth0, withAuthenticationRequired} from "@auth0/auth0-react";
+import {AppState, Auth0Provider, withAuthenticationRequired} from "@auth0/auth0-react";
 import React, {ReactNode} from "react";
-import {Redirect, Route, useHistory} from "react-router-dom";
+import {Route, useHistory} from "react-router-dom";
 import {Loading} from "../pages/loading";
 
-const auth0Domain = process.env.REACT_APP_AUTH0_DOMAIN || "";
-const auth0ClientId = process.env.REACT_APP_AUTH0_CLIENT_ID || "";
-const auth0Audience = process.env.REACT_APP_AUTH0_AUDIENCE || "";
-const auth0RedirectUrl = process.env.REACT_APP_AUTH0_REDIRECT_URL || "";
+export const auth0Domain = process.env.REACT_APP_AUTH0_DOMAIN || "";
+export const auth0ClientId = process.env.REACT_APP_AUTH0_CLIENT_ID || "";
+export const auth0Audience = process.env.REACT_APP_AUTH0_AUDIENCE || "";
+export const auth0Scope = "openid profile email"
+export const auth0RedirectUrl = process.env.REACT_APP_AUTH0_REDIRECT_URL || "";
 
 interface ProtectedRouteProps extends React.Props<any> {
     component: React.ComponentType,

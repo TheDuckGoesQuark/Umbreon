@@ -1,27 +1,34 @@
 // use-api.js
 import {useEffect, useState} from 'react';
 import {useAuth0} from '@auth0/auth0-react';
+import {auth0Audience, auth0Scope} from "../auth0/auth0";
 
-export interface ApiOptions {
-    audience: string,
-    scope: string
-    headers: HeadersInit
+export interface ApiOptions extends RequestInit {
 }
 
-export const useApi = (url: string, options: ApiOptions) => {
+export interface ApiCallState  {
+    loading: boolean,
+    data?: string | null,
+    error?: string | null,
+}
+
+export const useApi = (url: string, options?: ApiOptions) => {
+
     const {getAccessTokenSilently} = useAuth0();
-    const [state, setState] = useState({
+
+    const [apiState, setState] = useState<ApiCallState>({
         error: null,
         loading: true,
         data: null,
     });
+
     const [refreshIndex, setRefreshIndex] = useState(0);
 
     useEffect(() => {
         (async () => {
             try {
-                const {audience, scope, ...fetchOptions} = options;
-                const accessToken = await getAccessTokenSilently({audience, scope});
+                const {...fetchOptions} = options;
+                const accessToken = await getAccessTokenSilently({auth0Audience, auth0Scope});
                 const res = await fetch(url, {
                     ...fetchOptions,
                     headers: {
@@ -31,14 +38,14 @@ export const useApi = (url: string, options: ApiOptions) => {
                     },
                 });
                 setState({
-                    ...state,
+                    ...apiState,
                     data: await res.json(),
                     error: null,
                     loading: false,
                 });
             } catch (error) {
                 setState({
-                    ...state,
+                    ...apiState,
                     error,
                     loading: false,
                 });
@@ -47,7 +54,7 @@ export const useApi = (url: string, options: ApiOptions) => {
     }, [refreshIndex]);
 
     return {
-        ...state,
+        apiState,
         refresh: () => setRefreshIndex(refreshIndex + 1),
     };
 };

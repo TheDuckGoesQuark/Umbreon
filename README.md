@@ -9,3 +9,4 @@ The three is missing but who cares.
 
 ## Resources
 [How to build a web app with Go, Gin, and React](https://www.freecodecamp.org/news/how-to-build-a-web-app-with-go-gin-and-react-cffdc473576/) for understanding `gin` and `auth0`'s api.
+[React Router 4: A Practical Introduction](https://auth0.com/blog/react-router-4-practical-tutorial/) for getting react-router to play nicely with Auth0

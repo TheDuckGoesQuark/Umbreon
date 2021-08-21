@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
+	"umbreonserver/server/handlers"
 )
 
 type webController struct {
@@ -14,6 +14,5 @@ func NewWebController(config *ControllerConfig) *webController {
 }
 
 func (w webController) ConfigureRouter(router *gin.Engine) {
-	// Serve frontend static files
-	router.Use(static.Serve(w.config.GroupPrefix, static.LocalFile("./assets", true)))
+	router.Use(handlers.ServeAssets(w.config.GroupPrefix))
 }

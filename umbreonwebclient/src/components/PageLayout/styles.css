@@ -1,0 +1,11 @@
+.pagelayout {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  width: 100%;
+}
+
+.pagebody {
+  flex: 1;
+  height: 100%;
+}

@@ -1,0 +1,11 @@
+.footer {
+  width: 100%;
+  padding: 3rem;
+}
+
+.center {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  width: 30%;
+}

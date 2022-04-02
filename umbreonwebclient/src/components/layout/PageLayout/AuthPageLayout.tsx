@@ -1,8 +1,8 @@
-import NavHeader from "../NavHeader/NavHeader";
+import NavHeader from "../header/NavHeader/NavHeader";
 import LogoutFooter from "../LogoutFooter/LogoutFooter";
 import React from "react";
 import {Outlet} from "react-router-dom";
-import './styles.css'
+import './styles.scss'
 
 const AuthPageLayout:React.FC = () => {
     return <div className='pagelayout'>

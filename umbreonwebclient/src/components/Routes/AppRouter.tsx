@@ -2,8 +2,8 @@ import {Navigate, Route, Routes} from "react-router-dom";
 import React from "react";
 import {useAuth} from "../../contexts/AuthContext";
 import PrivateRoute from "./PrivateRoute";
-import PageLoader from "../PageLoader/PageLoader";
-import AuthPageLayout from "../PageLayout/AuthPageLayout";
+import PageLoader from "../layout/PageLoader/PageLoader";
+import AuthPageLayout from "../layout/PageLayout/AuthPageLayout";
 
 const LoginScreen = React.lazy(() => import("./LoginScreen"));
 const UserScreen = React.lazy(() => import("./UserScreen"));

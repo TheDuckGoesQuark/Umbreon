@@ -8,20 +8,22 @@ import AuthPageLayout from "../layout/PageLayout/AuthPageLayout";
 const LoginScreen = React.lazy(() => import("./LoginScreen"));
 const UserScreen = React.lazy(() => import("./UserScreen"));
 const ListDevicesScreen = React.lazy(() => import("./ListDevicesScreen"));
-const ManageDeviceScreen = React.lazy(() => import("./ManageDevice"));
+const ManageDeviceScreen = React.lazy(() => import("./DeviceSettings"));
+const ControlDeviceScreen = React.lazy(() => import("./ControlDevice"));
 
 const AppRouter = () => {
     const {isLoading, isAuthenticated} = useAuth();
 
-    if (isLoading) return <PageLoader />
+    if (isLoading) return <PageLoader/>
 
     const loginComponent = isAuthenticated
         ? <Navigate to={`/`} replace/>
         : <PageLoader><LoginScreen/></PageLoader>
 
-    const userManagement = <PrivateRoute children={<PageLoader><UserScreen /></PageLoader>}/>
+    const userManagement = <PrivateRoute children={<PageLoader><UserScreen/></PageLoader>}/>
     const deviceList = <PrivateRoute children={<PageLoader><ListDevicesScreen/></PageLoader>}/>
     const manageDevice = <PrivateRoute children={<PageLoader><ManageDeviceScreen/></PageLoader>}/>
+    const controlDevice = <PrivateRoute children={<PageLoader><ControlDeviceScreen/></PageLoader>}/>
 
     const rootIndexComponent = isAuthenticated
         ? <Navigate to={`/devices`} replace/>
@@ -36,7 +38,11 @@ const AppRouter = () => {
         </Route>
         <Route path='devices' element={<AuthPageLayout/>}>
             <Route index element={deviceList}/>
-            <Route path=':deviceid' element={manageDevice}/>
+            <Route path=':deviceId'>
+                <Route index element={manageDevice}/>
+                <Route path='manage' element={manageDevice}/>
+                <Route path='cockpit' element={controlDevice}/>
+            </Route>
         </Route>
     </Routes>)
 };

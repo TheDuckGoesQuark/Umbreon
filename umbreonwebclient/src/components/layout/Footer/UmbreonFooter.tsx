@@ -1,14 +1,20 @@
-import {useAuth} from "../../../contexts/AuthContext";
-import {Button, Group} from "@mantine/core";
+import {Anchor, Button, Group, Navbar} from "@mantine/core";
+import {Link} from "react-router-dom";
 
 const UmbreonFooter = () => {
-    const auth = useAuth();
-
-    return <Group position='center' align='center'>
-        <Button  variant='outline' onClick={() => auth.logout()}>
-            Devices
-        </Button>
-    </Group>
+    return <Navbar width={{base:'100%'}}>
+        <Group spacing='xl' position='center'>
+            <Anchor component={Link} to={"/account"}>
+                Account
+            </Anchor>
+            <Anchor component={Link} to={"/devices"}>
+                Devices
+            </Anchor>
+            <Anchor component={Link} to={"/about"}>
+                About
+            </Anchor>
+        </Group>
+    </Navbar>
 }
 
 export default UmbreonFooter;

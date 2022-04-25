@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ManageDevice = () => {
+const DeviceSettings = () => {
     return <main>
         <p>Manage device screen woah</p>
     </main>
 };
 
-export default ManageDevice;
+export default DeviceSettings;

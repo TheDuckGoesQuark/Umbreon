@@ -1,17 +1,17 @@
 import React from 'react';
 
 import {BrowserRouter} from 'react-router-dom';
-import {AuthProvider} from "../../contexts/AuthContext";
 import AppRouter from "../Routes/AppRouter";
+import {AggregatedContextsProvider} from "../../contexts/AggregatedContexts";
 
 const App = () => {
-  return (
-      <BrowserRouter>
-          <AuthProvider>
-              <AppRouter />
-          </AuthProvider>
-      </BrowserRouter>
-  )
+    return (
+        <BrowserRouter>
+            <AggregatedContextsProvider>
+                <AppRouter/>
+            </AggregatedContextsProvider>
+        </BrowserRouter>
+    )
 };
 
 export default App;

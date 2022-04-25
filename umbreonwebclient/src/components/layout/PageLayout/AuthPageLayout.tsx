@@ -1,17 +1,19 @@
-import NavHeader from "../header/NavHeader/NavHeader";
-import LogoutFooter from "../LogoutFooter/LogoutFooter";
 import React from "react";
 import {Outlet} from "react-router-dom";
-import './styles.scss'
+import {AppShell, Container, Footer, Header, ScrollArea} from "@mantine/core";
+import UmbreonHeader from "../Header/Header";
+import UmbreonFooter from "../Footer/UmbreonFooter";
 
-const AuthPageLayout:React.FC = () => {
-    return <div className='pagelayout'>
-        <NavHeader />
-        <main className='pagebody'>
-            <Outlet />
-        </main>
-        <LogoutFooter/>
-    </div>
+const AuthPageLayout: React.FC = () => {
+    return (<AppShell
+        padding="md"
+        header={<Header height={100} p='md' fixed><UmbreonHeader/></Header>}
+        footer={<Footer height={100} p='md' fixed><UmbreonFooter/></Footer>}
+    >
+        <Container mt={100} mb={100} fluid>
+            <Outlet/>
+        </Container>
+    </AppShell>)
 }
 
 export default AuthPageLayout;

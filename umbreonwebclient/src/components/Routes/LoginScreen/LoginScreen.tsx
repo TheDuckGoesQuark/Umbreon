@@ -2,6 +2,8 @@ import './styles.css';
 import React, {useCallback} from "react";
 import {useAuth} from "../../../contexts/AuthContext";
 import {Button, Center, Container, Footer} from "@mantine/core";
+import UmbreonHeader from "../../layout/Header/UmbreonHeader";
+import UmbreonFooter from "../../layout/Footer/UmbreonFooter";
 
 const LoginScreen = () => {
     const auth = useAuth();
@@ -11,15 +13,12 @@ const LoginScreen = () => {
     }, [auth]);
 
     return (
-        <Container sx={()=>({height: '100vh'})}>
+        <Container sx={()=>({height: '100vh'})} fluid>
+            <UmbreonHeader />
             <Center sx={()=>({height: '80vh'})}>
                 <Button onClick={onLogin}>Login</Button>
             </Center>
-            <Footer fixed height={75}>
-                <Center>
-                    <p>Git SHA: {process.env.REACT_APP_GIT_SHA || "local"}</p>
-                </Center>
-            </Footer>
+            <UmbreonFooter />
         </Container>
     )
 }

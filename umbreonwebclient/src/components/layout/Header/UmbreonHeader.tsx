@@ -1,13 +1,15 @@
-import {ActionIcon, Avatar, Title, Button, Group, Header} from "@mantine/core";
+import {ActionIcon, Title, Button, Group, Header} from "@mantine/core";
 import {useAuth} from "../../../contexts/AuthContext";
 import React from "react";
 import {SunIcon, MoonIcon} from "@radix-ui/react-icons";
 import {useTheme} from "../../../contexts/ThemeContext";
 import UmbreonAvatar from "./UmbreonAvatar";
+import {useLogoutRoute} from "../../Routes/PublicRoutes";
 
 const UmbreonHeader = () => {
     const {colorScheme, toggleColorScheme} = useTheme();
-    const auth = useAuth();
+    const goToLogoutRoute = useLogoutRoute();
+    const {user} = useAuth();
     const height = 60;
 
     const darkModeToggle = colorScheme === 'dark' ? <SunIcon/> : <MoonIcon/>
@@ -15,7 +17,7 @@ const UmbreonHeader = () => {
     return <Header height={height} fixed>
         <Group position='apart' grow pr={20} pl={20} pt={5} align='center'>
             <Group>
-                {auth.user && <UmbreonAvatar/>}
+                {user && <UmbreonAvatar/>}
             </Group>
             <Title align='center'>
                 Umbreon.lol
@@ -24,7 +26,7 @@ const UmbreonHeader = () => {
                 <ActionIcon size='xl' onClick={() => toggleColorScheme()}>
                     {darkModeToggle}
                 </ActionIcon>
-                {auth.user && <Button variant='outline' color='red' onClick={() => auth.logout()}>
+                {user && <Button variant='outline' color='red' onClick={() => goToLogoutRoute()}>
                     Logout
                 </Button>}
             </Group>

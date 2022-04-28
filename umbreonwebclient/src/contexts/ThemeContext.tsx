@@ -1,19 +1,29 @@
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {
     ButtonStylesParams,
     ColorScheme,
     ColorSchemeProvider,
     MantineProvider,
-    MantineTheme, useMantineColorScheme,
+    MantineTheme,
+    useMantineColorScheme,
     useMantineTheme
 } from "@mantine/core";
 import {useColorScheme} from "@mantine/hooks";
+import {FlagKey, getCookieFlag, setCookieFlag} from "../common/cookieFlag";
 
 const ThemeProvider: React.FC = ({children}) => {
-    const preferredColorScheme = useColorScheme();
+    const preferredColorScheme = useColorScheme(getCookieFlag(FlagKey.DARK_MODE, 'light') ? 'dark' : 'light');
     const [colorScheme, setColorScheme] = useState<ColorScheme>(preferredColorScheme);
     const toggleColorScheme = (value?: ColorScheme) =>
         setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
+    useEffect(() => {
+        if (preferredColorScheme === 'dark') {
+            setCookieFlag(FlagKey.DARK_MODE, true)
+        } else {
+            setCookieFlag(FlagKey.DARK_MODE, false)
+        }
+    }, [preferredColorScheme]);
 
     return (<ColorSchemeProvider
         colorScheme={colorScheme}
@@ -23,14 +33,14 @@ const ThemeProvider: React.FC = ({children}) => {
             withGlobalStyles
             withNormalizeCSS
             theme={{
+                colorScheme,
                 fontFamily: 'Open Sans, sans serif',
                 spacing: {xs: 15, sm: 20, md: 25, lg: 30, xl: 40},
                 colors: {
-                    dark: ['#030303'],
-                    neutral: ['#2441b2'],
-                    light: ['#1768ab'],
-                    lightest: ['#06bbe0'],
-                    white: ['#ffffff'],
+                    // neutral: ['#2441b2'],
+                    // light: ['#1768ab'],
+                    // lightest: ['#06bbe0'],
+                    // white: ['#ffffff'],
                 },
             }}
             defaultProps={{

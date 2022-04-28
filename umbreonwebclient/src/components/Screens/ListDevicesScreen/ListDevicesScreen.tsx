@@ -36,8 +36,8 @@ const ListDevicesScreen = () => {
     devices = devices.concat(devices)
 
     return <Grid justify='center' align='center' gutter='xl'>
-        {devices.map(device => {
-            return <Grid.Col md={6} lg={3}>
+        {devices.map((device,index) => {
+            return <Grid.Col key={index} md={6} lg={3}>
                 <DeviceCard {...device} />
             </Grid.Col>
         })}

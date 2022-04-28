@@ -1,22 +1,23 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useAuth} from "../../contexts/AuthContext";
 import {useLocation} from "react-router-dom";
+import {useLoginRoute} from "./PublicRoutes";
 
 interface PrivateRouteProps {
     children: React.ReactNode
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
-    const {login, isAuthenticated} = useAuth();
+    const {isAuthenticated} = useAuth();
+    const goToLogin = useLoginRoute();
     const location = useLocation();
 
-    if (!isAuthenticated) {
-        // Redirect them to the /login page, but save the current location they were
-        // trying to go to when they were redirected. This allows us to send them
-        // along to that page after they login, which is a nicer user experience
-        // than dropping them off on the home page.
-        login(location.pathname)
-    }
+    useEffect(() => {
+        if (!isAuthenticated) {
+            goToLogin(location.pathname);
+        }
+    }, [isAuthenticated, goToLogin, location])
+
 
     return <>{children}</>;
 };

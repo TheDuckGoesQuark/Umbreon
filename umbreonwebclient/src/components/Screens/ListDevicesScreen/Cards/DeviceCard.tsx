@@ -1,6 +1,7 @@
 import {Badge, Button, Image, Text, Card, Group, useMantineTheme, AspectRatio, ActionIcon, Center} from "@mantine/core";
 import {LoopIcon} from "@radix-ui/react-icons";
 import moment from "moment";
+import {useManageDeviceRoute} from "../../../Routes/DevicesRoutes";
 
 export enum DeviceState {
     Offline,
@@ -20,6 +21,7 @@ export interface DeviceCardProps {
 
 const DeviceCard = ({imgSrc, imgAlt, deviceName, deviceId, deviceState, deviceLastConnected}: DeviceCardProps) => {
     const theme = useMantineTheme();
+    const goToManageDeviceScreen = useManageDeviceRoute(deviceId);
 
     const statusColors: Record<DeviceState, string> = {
         [DeviceState.Available]: 'green',
@@ -54,7 +56,7 @@ const DeviceCard = ({imgSrc, imgAlt, deviceName, deviceId, deviceState, deviceLa
 
         <Center>
             {isAvailable
-                ? <Button variant={'light'} fullWidth style={{marginTop: 14}}> Connect </Button>
+                ? <Button onClick={()=>goToManageDeviceScreen()} fullWidth style={{marginTop: 14}}> Connect </Button>
                 : <ActionIcon size='lg' color='blue' style={{marginTop: 14}}><LoopIcon/></ActionIcon>
             }
         </Center>

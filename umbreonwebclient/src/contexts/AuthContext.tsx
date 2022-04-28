@@ -1,14 +1,14 @@
 import React, {useCallback, useMemo, useState} from "react";
 import {AppState, Auth0Provider, useAuth0} from "@auth0/auth0-react";
 import UmbreonUser from "../models/UmbreonUser";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export interface AuthContextType {
     user?: UmbreonUser;
     isAuthenticated?: boolean;
     isLoading?: boolean;
-    login: (redirectURI?: string) => void;
-    logout: (returnToURL?: string) => void;
+    login: (redirectURI?: string) => Promise<void>;
+    logout: (returnToURL?: string) => Promise<void>;
 }
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
@@ -47,12 +47,12 @@ const OfflineAuthProvider: React.FC = ({children}) => {
     const [user, setUser] = useState<UmbreonUser>()
     const navigate = useNavigate();
 
-    const login = useCallback((redirectURI?: string) => {
+    const login = useCallback(async (redirectURI?: string) => {
         setUser(OFFLINE_USER);
         navigate(redirectURI || '/login')
     }, [navigate]);
 
-    const logout = useCallback((returnToUrl?: string) => {
+    const logout = useCallback(async (returnToUrl?: string) => {
         setUser(undefined);
         navigate(returnToUrl || '/login')
     }, [navigate]);

@@ -2,9 +2,10 @@ import { PlusIcon } from '@radix-ui/react-icons'
 import {ActionIcon, Button, Card, Center} from "@mantine/core";
 
 interface AddNewCardProps {
+    addNewCard: ()=>void,
 }
 
-const AddNewDeviceCardProps = ({}:AddNewCardProps) => {
+const AddNewDeviceCardProps = ({addNewCard}:AddNewCardProps) => {
     return (<Card shadow="md" p="lg">
         <Card.Section>
             <Center>
@@ -14,7 +15,7 @@ const AddNewDeviceCardProps = ({}:AddNewCardProps) => {
             </Center>
         </Card.Section>
 
-        <Button variant="light" color="blue" fullWidth mt={45}>
+        <Button onClick={addNewCard} variant="light" color="blue" fullWidth mt={45}>
             Add New
         </Button>
     </Card>)

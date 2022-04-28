@@ -1,4 +1,4 @@
-import {Anchor, Button, Group, Navbar} from "@mantine/core";
+import {Anchor, Group, Navbar} from "@mantine/core";
 import {Link} from "react-router-dom";
 
 const UmbreonFooter = () => {

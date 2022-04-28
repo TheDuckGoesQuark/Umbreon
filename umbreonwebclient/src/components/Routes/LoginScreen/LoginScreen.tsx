@@ -1,7 +1,7 @@
 import './styles.css';
 import React, {useCallback} from "react";
 import {useAuth} from "../../../contexts/AuthContext";
-import logo from "./logo.svg";
+import {Button, Center, Container, Footer} from "@mantine/core";
 
 const LoginScreen = () => {
     const auth = useAuth();
@@ -11,25 +11,16 @@ const LoginScreen = () => {
     }, [auth]);
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-                <p>Git SHA: {process.env.REACT_APP_GIT_SHA}</p>
-
-                <button onClick={onLogin}>Login</button>
-            </header>
-        </div>
+        <Container sx={()=>({height: '100vh'})}>
+            <Center sx={()=>({height: '80vh'})}>
+                <Button onClick={onLogin}>Login</Button>
+            </Center>
+            <Footer fixed height={75}>
+                <Center>
+                    <p>Git SHA: {process.env.REACT_APP_GIT_SHA || "local"}</p>
+                </Center>
+            </Footer>
+        </Container>
     )
 }
 

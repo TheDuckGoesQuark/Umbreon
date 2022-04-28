@@ -1,6 +1,6 @@
 import React from "react";
 import {Outlet} from "react-router-dom";
-import {AppShell, Container, Footer, Header, ScrollArea} from "@mantine/core";
+import {AppShell, Container, Footer, Header} from "@mantine/core";
 import UmbreonHeader from "../Header/Header";
 import UmbreonFooter from "../Footer/UmbreonFooter";
 

@@ -16,7 +16,7 @@ const LogoutScreen = () => {
             }, 1000)
             return () => clearTimeout(timeout);
         }
-    }, [])
+    }, [auth, goToLogin])
 
     return (
         <Container sx={() => ({height: '100vh'})} fluid>

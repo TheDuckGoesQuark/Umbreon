@@ -1,6 +1,6 @@
 import React from 'react';
 import DeviceCard, {DeviceCardProps, DeviceState} from "./Cards/DeviceCard";
-import {Grid} from "@mantine/core";
+import {Group, SimpleGrid} from "@mantine/core";
 import ev3 from '../../../assets/ev3.jpeg';
 import AddNewCard from "./Cards/AddNewCard";
 
@@ -35,16 +35,14 @@ const ListDevicesScreen = () => {
     ];
     devices = devices.concat(devices)
 
-    return <Grid justify='center' align='center' gutter='xl'>
+    return <SimpleGrid cols={4}>
         {devices.map((device,index) => {
-            return <Grid.Col key={index} md={6} lg={3}>
-                <DeviceCard {...device} />
-            </Grid.Col>
+            return <DeviceCard key={index} {...device} />
         })}
-        <Grid.Col md={6} lg={3}>
-            <AddNewCard addNewCard={() => console.log("")}/>
-        </Grid.Col>
-    </Grid>
+        <Group position='center' >
+            <AddNewCard />
+        </Group>
+    </SimpleGrid>
 };
 
 export default ListDevicesScreen;

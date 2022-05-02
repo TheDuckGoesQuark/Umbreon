@@ -1,5 +1,5 @@
 import {Route, useNavigate} from "react-router-dom";
-import PageLayout from "../layout/PageLayout/PageLayout";
+import PageLayout from "../layout/PageLayout";
 import React, {useCallback} from "react";
 import PrivateRoute from "./PrivateRoute";
 import PageLoader from "../layout/PageLoader/PageLoader";

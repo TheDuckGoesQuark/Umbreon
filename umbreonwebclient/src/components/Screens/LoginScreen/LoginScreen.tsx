@@ -1,8 +1,7 @@
 import React, {useCallback} from "react";
 import {useAuth} from "../../../contexts/AuthContext";
-import {Button, Center, Container} from "@mantine/core";
-import UmbreonHeader from "../../layout/Header/UmbreonHeader";
-import UmbreonFooter from "../../layout/Footer/UmbreonFooter";
+import {Button, Center} from "@mantine/core";
+import PageLayout from "../../layout/PageLayout"
 import {useLocation} from "react-router-dom";
 
 type LocationState = {
@@ -18,13 +17,11 @@ const LoginScreen = () => {
     }, [auth, location.state]);
 
     return (
-        <Container sx={()=>({height: '100vh'})} fluid>
-            <UmbreonHeader />
-            <Center sx={()=>({height: '80vh'})}>
+        <PageLayout>
+            <Center sx={()=>({height: '100%'})}>
                 <Button onClick={onLogin}>Login</Button>
             </Center>
-            <UmbreonFooter />
-        </Container>
+        </PageLayout>
     )
 }
 

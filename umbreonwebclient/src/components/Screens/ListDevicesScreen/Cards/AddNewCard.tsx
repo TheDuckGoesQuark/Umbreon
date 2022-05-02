@@ -1,23 +1,18 @@
-import { PlusIcon } from '@radix-ui/react-icons'
-import {ActionIcon, Button, Card, Center} from "@mantine/core";
+import {PlusIcon} from '@radix-ui/react-icons'
+import {ActionIcon, Card, Center} from "@mantine/core";
+import {useAddNewDeviceRoute} from "../../../Routes/DevicesRoutes";
 
-interface AddNewCardProps {
-    addNewCard: ()=>void,
-}
+const AddNewDeviceCardProps = () => {
+    const goToNewDevice = useAddNewDeviceRoute();
 
-const AddNewDeviceCardProps = ({addNewCard}:AddNewCardProps) => {
-    return (<Card shadow="md" p="lg">
-        <Card.Section>
-            <Center>
-                <ActionIcon variant='outline' color='blue' size='xl'>
-                    <PlusIcon />
-                </ActionIcon>
-            </Center>
-        </Card.Section>
+    // TODO make show click cursor on hover
+    return (<Card onClick={() => goToNewDevice()}>
+        <Center>
+            <ActionIcon variant='filled' color='blue' size='xl'>
+                <PlusIcon/>
+            </ActionIcon>
+        </Center>
 
-        <Button onClick={addNewCard} variant="light" color="blue" fullWidth mt={45}>
-            Add New
-        </Button>
     </Card>)
 }
 

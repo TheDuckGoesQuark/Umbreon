@@ -1,10 +1,11 @@
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 
 import {Center, Container, Stack, Step, Stepper} from "@mantine/core";
 import useAddNewDeviceReducer, {AddDeviceAction, AddDeviceState} from "./useAddNewDeviceReducer";
 import StartStep from './steps/StartStep';
 import StepTransition from "./StepTransition";
 import useStepTransitions from "./useStepTransitions";
+import NewDeviceSetupStep from "./steps/NewDeviceSetup";
 
 const stateToStepNumber = (state: AddDeviceState): number => {
     switch (state) {
@@ -25,12 +26,13 @@ const stateToStepNumber = (state: AddDeviceState): number => {
 
 const AddNewDevice = () => {
     const [state, dispatch] = useAddNewDeviceReducer();
-    const [isTransitioning, startTransition, endTransition] = useStepTransitions()
+    const [isTransitioning, startTransition, endTransition] = useStepTransitions();
 
     const changeStep = useCallback((action: AddDeviceAction) => {
         dispatch(action);
         startTransition();
-    },[dispatch, startTransition])
+    }, [dispatch, startTransition]);
+
     // to add new never before seen device
 
     // generate new key pair from server with expiry
@@ -53,7 +55,9 @@ const AddNewDevice = () => {
         sx={() => ({height: '100%'})}
     >
         <Stack>
-            <Container>
+            <Container p='xl' sx={(theme) => ({
+                height: '50vh',
+            })}>
                 <StepTransition
                     activeStep={state === AddDeviceState.START}
                     onExited={endTransition}
@@ -62,17 +66,20 @@ const AddNewDevice = () => {
                     <StartStep dispatch={changeStep}/>
                 </StepTransition>
                 <StepTransition
-                    activeStep={state === AddDeviceState.EXISTING_DEVICE_SETUP}
+                    activeStep={state === AddDeviceState.NEW_DEVICE_SETUP}
                     onExited={endTransition}
                     isTransitioning={isTransitioning}
                 >
-                    <StartStep dispatch={changeStep}/>
+                    <NewDeviceSetupStep dispatch={changeStep}/>
                 </StepTransition>
             </Container>
-            <Container>
+            <Container mt='md'>
                 <Stepper active={stateToStepNumber(state)}>
                     <Step>
                         Start
+                    </Step>
+                    <Step>
+                        Setting up your device
                     </Step>
                     <Step>
                         Connecting device to your account

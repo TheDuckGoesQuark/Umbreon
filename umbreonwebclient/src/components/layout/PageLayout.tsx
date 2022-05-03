@@ -3,6 +3,7 @@ import {Outlet} from "react-router-dom";
 import {AppShell, Center, Container} from "@mantine/core";
 import UmbreonHeader from "./Header/UmbreonHeader";
 import UmbreonFooter from "./Footer/UmbreonFooter";
+import ErrorBoundary from "../common/ErrorBoundary";
 
 const PageLayout: React.FC = ({children}) => {
     return (<AppShell
@@ -11,8 +12,10 @@ const PageLayout: React.FC = ({children}) => {
         header={<UmbreonHeader/>}
         footer={<UmbreonFooter/>}
     >
-        <Outlet/>
-        {children}
+        <ErrorBoundary baseMessage="Something went wrong: " key='root-error-boundary'>
+            <Outlet/>
+            {children}
+        </ErrorBoundary>
     </AppShell>)
 }
 

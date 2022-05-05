@@ -1,11 +1,13 @@
 import React, {useCallback} from 'react';
 
-import {Center, Container, Stack, Step, Stepper} from "@mantine/core";
+import {Button, Center, Container, Stack, Step, Stepper} from "@mantine/core";
 import useAddNewDeviceReducer, {AddDeviceAction, AddDeviceState} from "./useAddNewDeviceReducer";
 import StartStep from './steps/StartStep';
 import StepTransition from "./StepTransition";
 import useStepTransitions from "./useStepTransitions";
-import NewDeviceSetupStep from "./steps/NewDeviceSetup";
+import NewDeviceSetupStep from "./steps/NewDeviceSetupStep";
+import ConnectingNewDeviceStep from "./steps/ConnectingNewDeviceStep";
+import SuccessStep from "./steps/SuccessStep";
 
 const stateToStepNumber = (state: AddDeviceState): number => {
     switch (state) {
@@ -33,17 +35,14 @@ const AddNewDevice = () => {
         startTransition();
     }, [dispatch, startTransition]);
 
-    // to add new never before seen device
+    const showGoBackButton = state !== AddDeviceState.START;
 
-    // generate new key pair from server with expiry
-    // download script to be put on device that uses key pair
+    // to add new never before seen device
 
     // boot ev3
     // copy over script
     // follow instructions that will run script on startup
 
-    // start device
-    // try connect
 
     // to add device that's been set up before
     // ask for device key pair code
@@ -72,24 +71,30 @@ const AddNewDevice = () => {
                 >
                     <NewDeviceSetupStep dispatch={changeStep}/>
                 </StepTransition>
+                <StepTransition
+                    activeStep={state === AddDeviceState.START_NEW_DEVICE}
+                    onExited={endTransition}
+                    isTransitioning={isTransitioning}
+                >
+                    <ConnectingNewDeviceStep nextStepDispatch={changeStep} />
+                </StepTransition>
+                <StepTransition
+                    activeStep={state === AddDeviceState.SUCCESS}
+                    onExited={endTransition}
+                    isTransitioning={isTransitioning}
+                >
+                    <SuccessStep deviceId={"abc"} />
+                </StepTransition>
             </Container>
             <Container mt='md'>
+                <Center>
+                    {showGoBackButton &&
+                    <Button m='md' variant='outline' onClick={() => changeStep(AddDeviceAction.GO_BACK)}>Go Back</Button>}
+                </Center>
                 <Stepper active={stateToStepNumber(state)}>
-                    <Step>
-                        Start
-                    </Step>
-                    <Step>
-                        Setting up your device
-                    </Step>
-                    <Step>
-                        Connecting device to your account
-                    </Step>
-                    <Step>
-                        Confirm device setup was successful
-                    </Step>
-                    <Step>
-                        Complete
-                    </Step>
+                    <Step label='Start' />
+                    <Step label='Setup ' />
+                    <Step label='Connect' />
                 </Stepper>
             </Container>
         </Stack>

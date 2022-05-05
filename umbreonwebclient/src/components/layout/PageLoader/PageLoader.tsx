@@ -1,15 +1,11 @@
 import React from 'react';
-import './styles.css';
+import {LoadingOverlay} from "@mantine/core";
 
 const PageLoader:React.FC = ({children}) => {
-    const loader = <div className='pageloader'>
-        Loading...
-    </div>;
-
     if (children) {
-        return <React.Suspense fallback={loader}>{children}</React.Suspense>
+        return <React.Suspense fallback={<LoadingOverlay visible />}>{children}</React.Suspense>
     } else {
-        return loader;
+        return <LoadingOverlay visible />
     }
 }
 

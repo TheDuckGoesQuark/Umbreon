@@ -10,14 +10,14 @@ const NewDeviceSetupStep = ({dispatch}: NewDeviceSetupStepProps) => {
     // download script to be put on device that uses key pair
 
     return <Group direction='row' position='center' align='center'>
-        <List listStyleType='numbered'>
+        <List listStyleType='numbered' center withPadding>
             <List.Item>
-                Follow the steps <Anchor href={"https://www.ev3dev.org/docs/getting-started/"}>here</Anchor>
+                Follow the steps <Anchor href={"https://www.ev3dev.org/docs/getting-started/"}>here </Anchor>
                 to setup your device. Make sure it's able to connect to the internet either
                 via bluetooth tethering or directly via WiFi.
             </List.Item>
             <List.Item>
-                Download <Text>startupscript.sh</Text> or Copy and Paste the following to a file:
+                Download <Text inline>startupscript.sh</Text> or Copy and Paste the following to a file:
                 <Text>
                     Script contents
                 </Text>
@@ -26,7 +26,7 @@ const NewDeviceSetupStep = ({dispatch}: NewDeviceSetupStepProps) => {
                 Copy the script over
             </List.Item>
         </List>
-        <Button onClick={()=>dispatch(AddDeviceAction.IS_ADDED)}>Device is ready</Button>
+        <Button onClick={() => dispatch(AddDeviceAction.IS_ADDED)}>Device is ready</Button>
     </Group>
 }
 

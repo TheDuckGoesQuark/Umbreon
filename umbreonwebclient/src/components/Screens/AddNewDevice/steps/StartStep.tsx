@@ -1,4 +1,4 @@
-import {Button, Group, Text, Title} from "@mantine/core";
+import {Button, Group, Text} from "@mantine/core";
 import {AddDeviceAction} from '../useAddNewDeviceReducer'
 
 interface StartStepProps {

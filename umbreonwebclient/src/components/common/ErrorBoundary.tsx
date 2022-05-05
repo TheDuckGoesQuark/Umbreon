@@ -1,4 +1,5 @@
 import {Component} from "react";
+import {Center} from "@mantine/core";
 
 type ErrorBoundaryProps = {
     baseMessage: string,
@@ -19,11 +20,14 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     }
 
     render() {
+        const {baseMessage} = this.props;
         const {error} = this.state;
 
         if (error) {
             return (
-                <div>{error}</div>
+                <Center>
+                    {baseMessage}{error.message}
+                </Center>
             );
         } else {
             return <>{this.props.children}</>;

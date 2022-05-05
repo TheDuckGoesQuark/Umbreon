@@ -3,6 +3,7 @@ import DeviceCard, {DeviceCardProps, DeviceState} from "./Cards/DeviceCard";
 import {Group, SimpleGrid} from "@mantine/core";
 import ev3 from '../../../assets/ev3.jpeg';
 import AddNewCard from "./Cards/AddNewCard";
+import SelfDestructButton from "../../common/SelfDestructButton";
 
 const ListDevicesScreen = () => {
     const imgSrc = ev3;
@@ -41,6 +42,9 @@ const ListDevicesScreen = () => {
         })}
         <Group position='center' >
             <AddNewCard />
+        </Group>
+        <Group position='center' >
+            <SelfDestructButton />
         </Group>
     </SimpleGrid>
 };

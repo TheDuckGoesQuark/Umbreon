@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 
-import {Button, Center, Container, Stack, Step, Stepper} from "@mantine/core";
+import {Button, Center, Container, Space, Stack, Step, Stepper} from "@mantine/core";
 import useAddNewDeviceReducer, {AddDeviceAction, AddDeviceState} from "./useAddNewDeviceReducer";
 import StartStep from './steps/StartStep';
 import StepTransition from "./StepTransition";
@@ -47,10 +47,8 @@ const AddNewDevice = () => {
     return <Center
         sx={() => ({height: '100%'})}
     >
-        <Stack>
-            <Container p='xl' sx={(theme) => ({
-                height: '50vh',
-            })}>
+        <Stack align='center' justify='space-between' >
+            <Container p='xl'>
                 <StepTransition
                     activeStep={state === AddDeviceState.START}
                     onExited={endTransition}
@@ -77,25 +75,27 @@ const AddNewDevice = () => {
                     onExited={endTransition}
                     isTransitioning={isTransitioning}
                 >
-                    <ConnectingDeviceStep nextStepDispatch={changeStep} />
+                    <ConnectingDeviceStep nextStepDispatch={changeStep}/>
                 </StepTransition>
                 <StepTransition
                     activeStep={state === AddDeviceState.SUCCESS}
                     onExited={endTransition}
                     isTransitioning={isTransitioning}
                 >
-                    <SuccessStep deviceId={"abc"} />
+                    <SuccessStep deviceId={"abc"}/>
                 </StepTransition>
             </Container>
-            <Container mt='md'>
+            <Container mt='md' >
                 <Center>
-                    {showGoBackButton &&
-                    <Button m='md' variant='outline' onClick={() => changeStep(AddDeviceAction.GO_BACK)}>Go Back</Button>}
+                    {showGoBackButton
+                        ? <Button m='md' variant='outline' onClick={() => changeStep(AddDeviceAction.GO_BACK)}>Go Back</Button>
+                        : <Space m='md' />
+                    }
                 </Center>
                 <Stepper active={stateToStepNumber(state)}>
-                    <Step label='Start' />
-                    <Step label='Setup ' />
-                    <Step label='Connect' />
+                    <Step label='Start'/>
+                    <Step label='Setup '/>
+                    <Step label='Connect'/>
                 </Stepper>
             </Container>
         </Stack>

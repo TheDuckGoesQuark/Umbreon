@@ -70,6 +70,7 @@ const ExistingDeviceSetupStep = ({nextStepDispatch}: ExistingDeviceSetupStepProp
             label='Device Key Pair Code'
             onChange={onInputChange}
             value={value}
+            error={isError && "Invalid"}
         />
         <Button
             type='submit'

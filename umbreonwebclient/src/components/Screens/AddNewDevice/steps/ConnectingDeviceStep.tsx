@@ -10,10 +10,8 @@ interface ConnectingNewDeviceStepProps {
     nextStepDispatch: (action: AddDeviceAction) => void
 }
 
-const ConnectingNewDeviceStep = ({nextStepDispatch}: ConnectingNewDeviceStepProps) => {
+const ConnectingDeviceStep = ({nextStepDispatch}: ConnectingNewDeviceStepProps) => {
     const [connectingState, dispatchConnectingAction] = useRetryableOperationReducer<void, void, void>();
-    // start device
-    // try connect
 
     const onClick = useCallback(() => {
         switch (connectingState.state) {
@@ -47,4 +45,4 @@ const ConnectingNewDeviceStep = ({nextStepDispatch}: ConnectingNewDeviceStepProp
     </Group>
 }
 
-export default ConnectingNewDeviceStep;
+export default ConnectingDeviceStep;

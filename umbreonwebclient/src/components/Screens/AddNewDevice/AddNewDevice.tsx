@@ -6,8 +6,9 @@ import StartStep from './steps/StartStep';
 import StepTransition from "./StepTransition";
 import useStepTransitions from "./useStepTransitions";
 import NewDeviceSetupStep from "./steps/NewDeviceSetupStep";
-import ConnectingNewDeviceStep from "./steps/ConnectingNewDeviceStep";
+import ConnectingDeviceStep from "./steps/ConnectingDeviceStep";
 import SuccessStep from "./steps/SuccessStep";
+import ExistingDeviceSetupStep from "./steps/ExistingDeviceSetupStep";
 
 const stateToStepNumber = (state: AddDeviceState): number => {
     switch (state) {
@@ -37,13 +38,6 @@ const AddNewDevice = () => {
 
     const showGoBackButton = state !== AddDeviceState.START;
 
-    // to add new never before seen device
-
-    // boot ev3
-    // copy over script
-    // follow instructions that will run script on startup
-
-
     // to add device that's been set up before
     // ask for device key pair code
 
@@ -72,11 +66,18 @@ const AddNewDevice = () => {
                     <NewDeviceSetupStep dispatch={changeStep}/>
                 </StepTransition>
                 <StepTransition
+                    activeStep={state === AddDeviceState.EXISTING_DEVICE_SETUP}
+                    onExited={endTransition}
+                    isTransitioning={isTransitioning}
+                >
+                    <ExistingDeviceSetupStep nextStepDispatch={changeStep}/>
+                </StepTransition>
+                <StepTransition
                     activeStep={state === AddDeviceState.START_NEW_DEVICE}
                     onExited={endTransition}
                     isTransitioning={isTransitioning}
                 >
-                    <ConnectingNewDeviceStep nextStepDispatch={changeStep} />
+                    <ConnectingDeviceStep nextStepDispatch={changeStep} />
                 </StepTransition>
                 <StepTransition
                     activeStep={state === AddDeviceState.SUCCESS}

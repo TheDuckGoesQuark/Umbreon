@@ -8,7 +8,6 @@ import {
     useMantineTheme,
     AspectRatio,
     ActionIcon,
-    createStyles, MantineTheme
 } from "@mantine/core";
 import {LoopIcon, GearIcon} from "@radix-ui/react-icons";
 import moment from "moment";

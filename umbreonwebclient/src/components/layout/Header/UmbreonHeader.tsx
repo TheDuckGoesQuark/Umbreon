@@ -1,4 +1,4 @@
-import {ActionIcon, Title, Button, Group, Header, MediaQuery, Burger} from "@mantine/core";
+import {ActionIcon, Title, Group, Header, MediaQuery, Burger} from "@mantine/core";
 import {useAuth} from "../../../contexts/AuthContext";
 import React from "react";
 import {SunIcon, MoonIcon} from "@radix-ui/react-icons";
@@ -19,7 +19,7 @@ const UmbreonHeader = ({navbarOpened, setNavbarOpened}: UmbreonHeaderProps) => {
     const darkModeToggle = colorScheme === 'dark' ? <SunIcon/> : <MoonIcon/>
 
     return <Header height={height} fixed>
-        <Group direction='row' noWrap align='center' position='apart' grow>
+        <Group direction='row' align='center' position='apart' grow>
             <MediaQuery largerThan="sm" styles={{display: 'none'}}>
                 <Burger
                     opened={navbarOpened}

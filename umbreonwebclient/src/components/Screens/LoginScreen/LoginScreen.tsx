@@ -18,7 +18,7 @@ const LoginScreen = () => {
 
     return (
         <PageLayout>
-            <Center sx={()=>({height: '100%'})}>
+            <Center>
                 <Button onClick={onLogin}>Login</Button>
             </Center>
         </PageLayout>

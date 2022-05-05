@@ -5,7 +5,6 @@ import React from "react";
 import {useListDevicesRoute} from "../../Routes/DevicesRoutes";
 import {useManageAccountRoute} from "../../Routes/AccountRoutes";
 import {useAboutRoute, useLoginRoute, useLogoutRoute} from "../../Routes/PublicRoutes";
-import {log} from "util";
 
 const useStyles = createStyles((theme: MantineTheme) => ({
     navButton: {

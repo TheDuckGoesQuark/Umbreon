@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from "react";
 import {
     ColorScheme,
-    ColorSchemeProvider,
+    ColorSchemeProvider, createStyles,
     MantineProvider,
     MantineTheme,
     useMantineColorScheme,
@@ -9,6 +9,13 @@ import {
 } from "@mantine/core";
 import {useColorScheme} from "@mantine/hooks";
 import {FlagKey, getCookieFlag, setCookieFlag} from "../utils/cookieFlag";
+
+export const usePageContainerStyles = createStyles((theme: MantineTheme) => ({
+    container: {
+        maxWidth: theme.breakpoints.sm,
+        margin: 'auto',
+    },
+}));
 
 const ThemeProvider: React.FC = ({children}) => {
     const preferredColorScheme = useColorScheme(getCookieFlag(FlagKey.DARK_MODE, 'light') ? 'dark' : 'light');
@@ -43,7 +50,8 @@ const ThemeProvider: React.FC = ({children}) => {
                         p: 'lg',
                         minHeight: theme.breakpoints.sm,
                     }
-                })
+
+                }),
             }}
         >
             {children}

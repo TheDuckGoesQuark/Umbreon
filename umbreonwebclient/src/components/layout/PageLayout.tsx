@@ -9,12 +9,6 @@ import UmbreonNavBar from "./NavBar/UmbreonNavBar";
 const useStyles = createStyles((theme: MantineTheme) => ({
     container: {
         minHeight: '100%',
-        backgroundColor: theme.colors.blue[6],
-
-        // Media query with value from theme
-        [`@media (max-width: ${theme.breakpoints.md}px)`]: {
-            backgroundColor: theme.colors.pink[6],
-        },
     },
 }));
 

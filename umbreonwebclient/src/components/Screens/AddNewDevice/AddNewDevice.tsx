@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 
-import {Button, Center, Container, Space, Stack, Step, Stepper} from "@mantine/core";
+import {Button, Center, Container, createStyles, MantineTheme, Space, Stack} from "@mantine/core";
 import useAddNewDeviceReducer, {AddDeviceAction, AddDeviceState} from "./useAddNewDeviceReducer";
 import StartStep from './steps/StartStep';
 import StepTransition from "./StepTransition";
@@ -9,6 +9,8 @@ import NewDeviceSetupStep from "./steps/NewDeviceSetupStep";
 import ConnectingDeviceStep from "./steps/ConnectingDeviceStep";
 import SuccessStep from "./steps/SuccessStep";
 import ExistingDeviceSetupStep from "./steps/ExistingDeviceSetupStep";
+import StepIndicator from "./StepIndicator";
+import {usePageContainerStyles} from "../../../contexts/ThemeContext";
 
 const stateToStepNumber = (state: AddDeviceState): number => {
     switch (state) {
@@ -28,6 +30,7 @@ const stateToStepNumber = (state: AddDeviceState): number => {
 }
 
 const AddNewDevice = () => {
+    const {classes} = usePageContainerStyles()
     const [state, dispatch] = useAddNewDeviceReducer();
     const [isTransitioning, startTransition, endTransition] = useStepTransitions();
 
@@ -44,62 +47,59 @@ const AddNewDevice = () => {
     // start device
     // try connect
 
-    return <Center
-        sx={() => ({height: '100%'})}
-    >
-        <Stack align='center' justify='space-between' >
-            <Container p='xl'>
-                <StepTransition
-                    activeStep={state === AddDeviceState.START}
-                    onExited={endTransition}
-                    isTransitioning={isTransitioning}
-                >
-                    <StartStep dispatch={changeStep}/>
-                </StepTransition>
-                <StepTransition
-                    activeStep={state === AddDeviceState.NEW_DEVICE_SETUP}
-                    onExited={endTransition}
-                    isTransitioning={isTransitioning}
-                >
-                    <NewDeviceSetupStep dispatch={changeStep}/>
-                </StepTransition>
-                <StepTransition
-                    activeStep={state === AddDeviceState.EXISTING_DEVICE_SETUP}
-                    onExited={endTransition}
-                    isTransitioning={isTransitioning}
-                >
-                    <ExistingDeviceSetupStep nextStepDispatch={changeStep}/>
-                </StepTransition>
-                <StepTransition
-                    activeStep={state === AddDeviceState.START_NEW_DEVICE}
-                    onExited={endTransition}
-                    isTransitioning={isTransitioning}
-                >
-                    <ConnectingDeviceStep nextStepDispatch={changeStep}/>
-                </StepTransition>
-                <StepTransition
-                    activeStep={state === AddDeviceState.SUCCESS}
-                    onExited={endTransition}
-                    isTransitioning={isTransitioning}
-                >
-                    <SuccessStep deviceId={"abc"}/>
-                </StepTransition>
-            </Container>
-            <Container mt='md' >
-                <Center>
-                    {showGoBackButton
-                        ? <Button m='md' variant='outline' onClick={() => changeStep(AddDeviceAction.GO_BACK)}>Go Back</Button>
-                        : <Space m='md' />
-                    }
-                </Center>
-                <Stepper active={stateToStepNumber(state)}>
-                    <Step label='Start'/>
-                    <Step label='Setup '/>
-                    <Step label='Connect'/>
-                </Stepper>
-            </Container>
-        </Stack>
-    </Center>
+    return <Stack align='center' justify='space-between'>
+        <Container className={classes.container}>
+            <StepTransition
+                activeStep={state === AddDeviceState.START}
+                onExited={endTransition}
+                isTransitioning={isTransitioning}
+            >
+                <StartStep dispatch={changeStep}/>
+            </StepTransition>
+            <StepTransition
+                activeStep={state === AddDeviceState.NEW_DEVICE_SETUP}
+                onExited={endTransition}
+                isTransitioning={isTransitioning}
+            >
+                <NewDeviceSetupStep dispatch={changeStep}/>
+            </StepTransition>
+            <StepTransition
+                activeStep={state === AddDeviceState.EXISTING_DEVICE_SETUP}
+                onExited={endTransition}
+                isTransitioning={isTransitioning}
+            >
+                <ExistingDeviceSetupStep nextStepDispatch={changeStep}/>
+            </StepTransition>
+            <StepTransition
+                activeStep={state === AddDeviceState.START_NEW_DEVICE}
+                onExited={endTransition}
+                isTransitioning={isTransitioning}
+            >
+                <ConnectingDeviceStep nextStepDispatch={changeStep}/>
+            </StepTransition>
+            <StepTransition
+                activeStep={state === AddDeviceState.SUCCESS}
+                onExited={endTransition}
+                isTransitioning={isTransitioning}
+            >
+                <SuccessStep deviceId={"abc"}/>
+            </StepTransition>
+        </Container>
+        <Container mt='md'>
+            <Center>
+                {showGoBackButton
+                    ? <Button m='md' variant='outline' onClick={() => changeStep(AddDeviceAction.GO_BACK)}>Go
+                        Back
+                    </Button>
+                    : <Space m='md'/>
+                }
+            </Center>
+            <StepIndicator
+                stepLabels={['Start', 'Setup', 'Connect']}
+                activeStep={stateToStepNumber(state)}
+            />
+        </Container>
+    </Stack>
 };
 
 export default AddNewDevice;

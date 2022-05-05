@@ -59,7 +59,7 @@ const DeviceCard = ({imgSrc, imgAlt, deviceName, deviceId, deviceState, deviceLa
 
         <Group mt={14} mb={0} position='center' direction='row'>
             <Button
-                disabled={isAvailable}
+                disabled={!isAvailable}
                 onClick={() => goToControlDeviceScreen()}
                 fullWidth
             >

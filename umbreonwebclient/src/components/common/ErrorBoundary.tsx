@@ -1,5 +1,5 @@
 import {Component} from "react";
-import {Button, Center, Group} from "@mantine/core";
+import {Button, Group} from "@mantine/core";
 
 type ErrorBoundaryProps = {
     baseMessage: string,

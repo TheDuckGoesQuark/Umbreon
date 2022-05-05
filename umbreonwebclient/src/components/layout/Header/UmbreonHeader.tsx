@@ -15,7 +15,7 @@ const UmbreonHeader = () => {
     const darkModeToggle = colorScheme === 'dark' ? <SunIcon/> : <MoonIcon/>
 
     return <Header height={height} fixed>
-        <Group position='apart' grow pr={20} pl={20} pt={5} align='center'>
+        <Group position='apart' pr={20} pl={20} pt={5} align='center'>
             <Group>
                 {user && <UmbreonAvatar/>}
             </Group>

@@ -4,7 +4,7 @@ import {Center, Container, Text} from "@mantine/core";
 import {useLoginRoute} from "../../Routes/PublicRoutes";
 
 const LogoutScreen = () => {
-    const goToLogin = useLoginRoute();
+    const [goToLogin] = useLoginRoute();
     const auth = useAuth();
 
     useEffect(() => {

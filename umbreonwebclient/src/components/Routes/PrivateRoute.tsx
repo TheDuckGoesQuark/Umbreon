@@ -9,7 +9,7 @@ interface PrivateRouteProps {
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
     const {isAuthenticated} = useAuth();
-    const goToLogin = useLoginRoute();
+    const [goToLogin] = useLoginRoute();
     const location = useLocation();
 
     useEffect(() => {

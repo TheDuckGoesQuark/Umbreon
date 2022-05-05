@@ -5,6 +5,7 @@ import {useAuth} from "../../contexts/AuthContext";
 
 const LoginScreen = React.lazy(() => import("../Screens/LoginScreen"));
 const LogoutScreen = React.lazy(() => import("../Screens/LogoutScreen"));
+const AboutScreen = React.lazy(() => import("../Screens/AboutScreen"));
 
 export const LoginRoute = () => {
     const {isAuthenticated} = useAuth();
@@ -19,9 +20,9 @@ export const LoginRoute = () => {
 export const useLoginRoute = () => {
     const navigate = useNavigate();
 
-    return useCallback((returnTo?: string) => {
+    return [useCallback((returnTo?: string) => {
         navigate('/login', {state: {returnTo}})
-    }, [navigate])
+    }, [navigate]), '/login'] as const;
 }
 
 const LogoutRoute = () => {
@@ -37,9 +38,23 @@ export const useLogoutRoute = () => {
     }, [navigate])
 }
 
+const AboutRoute = () => {
+    const aboutComponent = <PageLoader><AboutScreen/></PageLoader>
+    return <Route key='about' path='about' element={aboutComponent}/>;
+}
+
+export const useAboutRoute = () => {
+    const navigate = useNavigate();
+
+    return [useCallback(() => {
+        navigate('/about')
+    }, [navigate]), '/about'] as const;
+}
+
 const PublicRoutes = () => [
     LogoutRoute(),
     LoginRoute(),
+    AboutRoute(),
 ]
 
 export default PublicRoutes;

@@ -8,7 +8,6 @@ import ErrorBoundary from "../common/ErrorBoundary";
 const PageLayout: React.FC = ({children}) => {
     return (<AppShell
         fixed
-        padding="md"
         header={<UmbreonHeader/>}
         footer={<UmbreonFooter/>}
     >

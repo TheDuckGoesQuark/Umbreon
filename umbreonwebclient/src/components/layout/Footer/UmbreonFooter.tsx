@@ -1,4 +1,4 @@
-import {Anchor, Footer, Group, Text} from "@mantine/core";
+import {Anchor, createStyles, Footer, Group, MantineTheme, Text} from "@mantine/core";
 import {Link, useLocation} from "react-router-dom";
 import {useAuth} from "../../../contexts/AuthContext";
 import React from "react";
@@ -6,7 +6,19 @@ import {useListDevicesRoute} from "../../Routes/DevicesRoutes";
 import {useManageAccountRoute} from "../../Routes/AccountRoutes";
 import {useAboutRoute, useLoginRoute} from "../../Routes/PublicRoutes";
 
+const useStyles = createStyles((theme: MantineTheme) => ({
+    footer: {
+        // hide footer on tiny screens
+        [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+            display: 'none'
+        },
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+}));
+
 const UmbreonFooter = () => {
+    const {classes} = useStyles();
     const {isAuthenticated} = useAuth();
     const location = useLocation();
     const [, loginRoute] = useLoginRoute();
@@ -29,8 +41,8 @@ const UmbreonFooter = () => {
         .filter(({href}) => href !== location.pathname);
 
     const height = 30;
-    return <Footer height={height}>
-        <Group position='apart' pl={20} pr={20}>
+    return <Footer height={height} className={classes.footer}>
+        <Group position='apart'>
             <Group spacing='xl' position='left' align='center' direction='row'>
                 <Text>Git SHA: {process.env.REACT_APP_GIT_SHA || "local"}</Text>
             </Group>

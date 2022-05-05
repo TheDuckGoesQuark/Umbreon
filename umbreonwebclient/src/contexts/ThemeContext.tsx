@@ -38,7 +38,11 @@ const ThemeProvider: React.FC = ({children}) => {
             }}
             defaultProps={{
                 Card: (theme: MantineTheme) => ({
-                    root: {shadow: 'xl', p: 'lg'}
+                    root: {
+                        shadow: 'xl',
+                        p: 'lg',
+                        minHeight: theme.breakpoints.sm,
+                    }
                 })
             }}
         >

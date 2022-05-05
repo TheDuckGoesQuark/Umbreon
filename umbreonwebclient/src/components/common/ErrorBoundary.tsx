@@ -27,7 +27,10 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             return (
                 <Group direction='column' align='center' position='center'>
                     {baseMessage}{error.message}
-                    <Button onClick={() => this.setState({error: undefined})}>
+                    <Button onClick={() => {
+                        this.setState({error: undefined});
+                        console.clear()
+                    }}>
                         Back to Safety
                     </Button>
                 </Group>

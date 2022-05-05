@@ -1,4 +1,15 @@
-import {Badge, Button, Image, Text, Card, Group, useMantineTheme, AspectRatio, ActionIcon} from "@mantine/core";
+import {
+    Badge,
+    Button,
+    Image,
+    Text,
+    Card,
+    Group,
+    useMantineTheme,
+    AspectRatio,
+    ActionIcon,
+    createStyles, MantineTheme
+} from "@mantine/core";
 import {LoopIcon, GearIcon} from "@radix-ui/react-icons";
 import moment from "moment";
 import {useControlDeviceRoute, useManageDeviceRoute} from "../../../Routes/DevicesRoutes";
@@ -8,7 +19,6 @@ export enum DeviceState {
     Available,
     Busy,
 }
-
 
 export interface DeviceCardProps {
     imgSrc: string,

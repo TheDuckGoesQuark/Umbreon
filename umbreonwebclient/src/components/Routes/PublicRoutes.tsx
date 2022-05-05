@@ -33,9 +33,9 @@ const LogoutRoute = () => {
 export const useLogoutRoute = () => {
     const navigate = useNavigate();
 
-    return useCallback(() => {
+    return [useCallback(() => {
         navigate('/logout')
-    }, [navigate])
+    }, [navigate]), '/logout'] as const;
 }
 
 const AboutRoute = () => {

@@ -1,14 +1,19 @@
 import React from 'react';
 import DeviceCard, {DeviceCardProps, DeviceState} from "./Cards/DeviceCard";
-import {Group, SimpleGrid} from "@mantine/core";
+import {Center, createStyles, MantineTheme, SimpleGrid} from "@mantine/core";
 import ev3 from '../../../assets/ev3.jpeg';
 import AddNewCard from "./Cards/AddNewCard";
-import SelfDestructButton from "../../common/SelfDestructButton";
-import {useViewportSize} from "@mantine/hooks";
+
+const useStyles = createStyles((theme: MantineTheme) => ({
+    container: {
+        maxWidth: theme.breakpoints.md,
+        margin: 'auto',
+    },
+}));
 
 const ListDevicesScreen = () => {
+    const {classes} = useStyles();
     const imgSrc = ev3;
-    const viewport = useViewportSize()
 
     let devices: DeviceCardProps[] = [
         {
@@ -38,17 +43,25 @@ const ListDevicesScreen = () => {
     ];
     devices = devices.concat(devices)
 
-    return <SimpleGrid cols={viewport.height < viewport.width ? 4 : 1}>
-        {devices.map((device, index) => {
-            return <DeviceCard key={index} {...device} />
-        })}
-        <Group position='center'>
-            <AddNewCard/>
-        </Group>
-        <Group position='center'>
-            <SelfDestructButton/>
-        </Group>
-    </SimpleGrid>
+    return <>
+        <SimpleGrid
+            className={classes.container}
+            cols={4}
+            breakpoints={[
+                {maxWidth: 'xs', cols: 1},
+                {maxWidth: 'sm', cols: 2},
+                {maxWidth: 'md', cols: 3}
+            ]}
+        >
+            {devices.map((device, index) => {
+                return <DeviceCard key={index} {...device} />
+            })}
+
+            <Center m='xl'>
+                <AddNewCard/>
+            </Center>
+        </SimpleGrid>
+    </>
 };
 
 export default ListDevicesScreen;

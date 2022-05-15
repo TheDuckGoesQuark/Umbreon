@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"umbreonserver/server/handlers"
+	"umbreonserver/server/middleware"
 )
 
 type AuthController struct {
@@ -17,7 +18,7 @@ func NewAuthController(config *ControllerConfig, loginHandler func(router *gin.C
 
 func (a AuthController) ConfigureRouter(router *gin.Engine) {
 	api := router.Group(a.config.GroupPrefix)
-
+	api.Use(middleware.EnsureValidToken())
 	api.GET("/", handlers.PingHandler)
 	api.POST("/login", a.loginHandler)
 	api.POST("/logout", a.logoutHandler)

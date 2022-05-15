@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"umbreonserver/server/handlers"
+	"umbreonserver/server/middleware"
 )
 
 type BotController struct {
@@ -18,6 +19,7 @@ func NewBotController(config *ControllerConfig, versionHandler func(router *gin.
 func (b BotController) ConfigureRouter(router *gin.Engine) {
 	// Setup route group for the API
 	api := router.Group(b.config.GroupPrefix)
+	api.Use(middleware.EnsureValidRobotSecret())
 	api.GET("/", handlers.PingHandler)
 	api.GET("/version", b.versionHandler)
 	api.GET("/download", b.downloadHandler)

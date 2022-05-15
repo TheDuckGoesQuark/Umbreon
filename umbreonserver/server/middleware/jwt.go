@@ -4,6 +4,7 @@ package middleware
 
 import (
 	"context"
+	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"net/url"
@@ -13,6 +14,7 @@ import (
 	"github.com/auth0/go-jwt-middleware/v2"
 	"github.com/auth0/go-jwt-middleware/v2/jwks"
 	"github.com/auth0/go-jwt-middleware/v2/validator"
+	"github.com/gwatts/gin-adapter"
 )
 
 // CustomClaims contains custom data we want from the token.
@@ -27,7 +29,7 @@ func (c CustomClaims) Validate(ctx context.Context) error {
 }
 
 // EnsureValidToken is a middleware that will check the validity of our JWT.
-func EnsureValidToken() func(next http.Handler) http.Handler {
+func EnsureValidToken() gin.HandlerFunc {
 	issuerURL, err := url.Parse("https://" + os.Getenv("AUTH0_DOMAIN") + "/")
 	if err != nil {
 		log.Fatalf("Failed to parse the issuer url: %v", err)
@@ -64,7 +66,9 @@ func EnsureValidToken() func(next http.Handler) http.Handler {
 		jwtmiddleware.WithErrorHandler(errorHandler),
 	)
 
-	return func(next http.Handler) http.Handler {
-		return middleware.CheckJWT(next)
-	}
+	return adapter.Wrap(middleware.CheckJWT)
 }
+
+// looks for something like this
+// curl --location --request GET 'http://localhost:5000/products' \
+//--header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAiLCJhdWQiOiJhcGk6cmVhZCJ9.hbgwKW_RILeXXDDUv5bVK3WgjtvqoK5IiuisgnFWefY'

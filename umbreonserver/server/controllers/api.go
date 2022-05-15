@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/gin-gonic/gin"
 	"umbreonserver/server/handlers"
+	"umbreonserver/server/middleware"
 )
 
 type ApiController struct {
@@ -15,6 +16,7 @@ func NewApiController(config *ControllerConfig) *ApiController {
 
 func (a ApiController) ConfigureRouter(router *gin.Engine) {
 	api := router.Group("/api")
+	api.Use(middleware.EnsureValidToken())
 	api.GET("/", handlers.PingHandler)
 }
 

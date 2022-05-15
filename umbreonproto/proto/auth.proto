@@ -1,0 +1,18 @@
+syntax = "proto3";
+package umbreon;
+
+message LoginRequest {
+  string email = 1;
+  string id_token = 2;
+}
+
+message LoginResponse {
+}
+
+message SignupRequest {
+  string email = 1;
+  string id_token = 2;
+}
+
+message SignupResponse {
+}

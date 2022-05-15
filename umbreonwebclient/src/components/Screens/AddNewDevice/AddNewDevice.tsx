@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react';
 
-import {Button, Center, Container, createStyles, MantineTheme, Space, Stack} from "@mantine/core";
+import {Button, Center, Container, Space, Stack} from "@mantine/core";
 import useAddNewDeviceReducer, {AddDeviceAction, AddDeviceState} from "./useAddNewDeviceReducer";
 import StartStep from './steps/StartStep';
 import StepTransition from "./StepTransition";

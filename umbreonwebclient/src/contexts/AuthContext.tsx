@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {AppState, Auth0Provider, useAuth0} from "@auth0/auth0-react";
 import UmbreonUser from "../models/UmbreonUser";
 import {useNavigate} from "react-router-dom";

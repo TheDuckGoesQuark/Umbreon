@@ -8,7 +8,7 @@ ENV BOT_CODE_VERSION=1
 
 WORKDIR /go/src/umbreonserver
 
-COPY . /go/src/umbreonserver
+COPY . /go/src/umbreonderver
 
 RUN go mod download
 RUN go build umbreonserver

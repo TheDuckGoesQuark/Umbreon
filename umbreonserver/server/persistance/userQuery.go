@@ -57,7 +57,7 @@ func NewGetUserByEmailQuery(email string) *GetUserByEmailQuery {
 
 func (g InsertUserQuery) executeQuery(pool *pgxpool.Pool) (*models.User, error) {
 	var result models.User
-	err := pool.QueryRow(context.Background(), g.query, g.email).Scan(
+	err := pool.QueryRow(context.Background(), g.query, g.user).Scan(
 		&result.UserId, &result.Email, &result.EncryptedPassword)
 	return &result, err
 }

@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Avatar, Button, Container, Group, Space, Text, Title} from "@mantine/core";
+import {Avatar, Button, Container, Group, Space, Stack, Text, Title} from "@mantine/core";
 import {useAuth} from "../../../contexts/AuthContext";
 import ConfirmDeleteAccountModal from "./ConfirmDeleteAccountModal";
 
@@ -17,7 +17,7 @@ const UserScreen = () => {
     }, [setModalOpen])
 
     return <Container fluid>
-        <Group pt='lg' direction='column' align='center' position='center'>
+        <Stack pt='lg' align='center' justify='center'>
             <Avatar size='xl' src={user?.picture} alt='Avatar'/>
 
             <Title order={3}>Name</Title>
@@ -29,7 +29,7 @@ const UserScreen = () => {
             <Space pt='xl' />
 
             <Button color='red' variant='outline' onClick={openModal}>Delete Account</Button>
-        </Group>
+        </Stack>
 
         <ConfirmDeleteAccountModal isOpen={modalOpen} close={closeModal} />
     </Container>

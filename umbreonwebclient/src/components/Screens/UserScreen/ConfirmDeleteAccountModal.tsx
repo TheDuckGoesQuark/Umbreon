@@ -1,4 +1,4 @@
-import {Button, Group, Modal, Text, Title} from '@mantine/core'
+import {Button, Group, Modal, Stack, Text, Title} from '@mantine/core'
 import {useCallback} from "react";
 
 interface ConfirmDeleteAccountModalProps {
@@ -14,10 +14,10 @@ const ConfirmDeleteAccountModal = ({isOpen, close}:ConfirmDeleteAccountModalProp
     const title = <Title  order={2}>Are you sure?</Title>;
 
     return <Modal opened={isOpen} onClose={close} title={title} centered padding='xl'>
-        <Group direction='column' align='center' position='center'>
+        <Stack  align='center' justify='center'>
             <Text>This action cannot be undone</Text>
             <Button color='red' onClick={onDelete}>Delete my account</Button>
-        </Group>
+        </Stack>
     </Modal>
 }
 

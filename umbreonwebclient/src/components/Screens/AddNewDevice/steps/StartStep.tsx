@@ -6,7 +6,7 @@ interface StartStepProps {
 }
 
 const StartStep = ({dispatch}: StartStepProps) => {
-    return <Group direction='row' position='center' align='center'>
+    return <Group position='center' align='center'>
         <Button fullWidth onClick={() => dispatch(AddDeviceAction.IS_EXISTING_DEVICE)}>
             I already have the connection code for this device
         </Button>

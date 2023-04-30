@@ -1,4 +1,4 @@
-import {Button, Group, TextInput} from "@mantine/core";
+import {Button, Group, Stack, TextInput} from "@mantine/core";
 import {AddDeviceAction} from '../useAddNewDeviceReducer'
 import useRetryableOperationReducer, {
     RetryableOperationActionType,
@@ -65,7 +65,7 @@ const ExistingDeviceSetupStep = ({nextStepDispatch}: ExistingDeviceSetupStepProp
     const isAddingToAccount = addDeviceToAccountState.state === RetryableOperationStatus.PERFORMING;
     const isError = addDeviceToAccountState.state === RetryableOperationStatus.ERROR;
 
-    return <Group direction='column' position='center' align='center'>
+    return <Stack justify='center' align='center'>
         <TextInput
             label='Device Key Pair Code'
             onChange={onInputChange}
@@ -80,7 +80,7 @@ const ExistingDeviceSetupStep = ({nextStepDispatch}: ExistingDeviceSetupStepProp
         >
             Validate Code
         </Button>
-    </Group>
+    </Stack>
 }
 
 export default ExistingDeviceSetupStep;

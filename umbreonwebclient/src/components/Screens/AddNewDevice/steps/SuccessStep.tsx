@@ -1,4 +1,4 @@
-import {Group, Text} from "@mantine/core";
+import {Group, Stack, Text} from "@mantine/core";
 import {useEffect} from "react";
 import {useManageDeviceRoute} from "../../../Routes/DevicesRoutes";
 
@@ -19,9 +19,9 @@ const SuccessStep = ({deviceId}: SuccessStepProps) => {
         return ()=>clearTimeout(timeout);
     }, [goToManageDevice]);
 
-    return <Group direction='column' position='center' align='center'>
+    return <Stack  justify='center' align='center'>
         <Text>Connected Successfully!</Text>
-    </Group>
+    </Stack>
 }
 
 export default SuccessStep;

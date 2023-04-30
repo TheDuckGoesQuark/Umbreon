@@ -1,5 +1,5 @@
 import {Component} from "react";
-import {Button, Group} from "@mantine/core";
+import {Button, Group, Stack} from "@mantine/core";
 
 type ErrorBoundaryProps = {
     baseMessage: string,
@@ -25,7 +25,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
         if (error) {
             return (
-                <Group direction='column' align='center' position='center'>
+                <Stack align='center' justify='center'>
                     {baseMessage}{error.message}
                     <Button onClick={() => {
                         this.setState({error: undefined});
@@ -33,7 +33,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
                     }}>
                         Back to Safety
                     </Button>
-                </Group>
+                </Stack>
             );
         } else {
             return <>{this.props.children}</>;

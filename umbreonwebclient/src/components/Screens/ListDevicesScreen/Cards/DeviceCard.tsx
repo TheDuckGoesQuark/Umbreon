@@ -7,11 +7,12 @@ import {
     Group,
     useMantineTheme,
     AspectRatio,
-    ActionIcon,
+    ActionIcon, Stack,
 } from "@mantine/core";
-import {LoopIcon, GearIcon} from "@radix-ui/react-icons";
 import moment from "moment";
 import {useControlDeviceRoute, useManageDeviceRoute} from "../../../Routes/DevicesRoutes";
+import React from "react";
+import {Refresh, Settings} from "tabler-icons-react";
 
 export enum DeviceState {
     Offline,
@@ -57,16 +58,16 @@ const DeviceCard = ({imgSrc, imgAlt, deviceName, deviceId, deviceState, deviceLa
             </Badge>
         </Group>
 
-        <Group position='center' direction='column' align='center' spacing='xs'>
+        <Stack justify='center' align='center' spacing='xs'>
             <Text weight={200} size="sm">
                 Last Connected
             </Text>
             <Text size="sm">
                 {lastConnectedString}
             </Text>
-        </Group>
+        </Stack>
 
-        <Group mt={14} mb={0} position='center' direction='row'>
+        <Group mt={14} mb={0} position='center' >
             <Button
                 disabled={!isAvailable}
                 onClick={() => goToControlDeviceScreen()}
@@ -77,12 +78,12 @@ const DeviceCard = ({imgSrc, imgAlt, deviceName, deviceId, deviceState, deviceLa
             <ActionIcon
                 onClick={() => goToManageDeviceScreen()}
             >
-                <GearIcon/>
+                <Settings/>
             </ActionIcon>
             <ActionIcon color='blue'
                     onClick={() => goToManageDeviceScreen()}
             >
-                <LoopIcon/>
+                <Refresh/>
             </ActionIcon>
         </Group>
     </Card>)

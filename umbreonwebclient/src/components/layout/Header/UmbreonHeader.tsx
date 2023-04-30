@@ -1,10 +1,10 @@
 import {ActionIcon, Title, Group, Header, MediaQuery, Burger} from "@mantine/core";
 import {useAuth} from "../../../contexts/AuthContext";
 import React from "react";
-import {SunIcon, MoonIcon} from "@radix-ui/react-icons";
 import {useTheme} from "../../../contexts/ThemeContext";
 import UmbreonAvatar from "./UmbreonAvatar";
 import LogoutButton from "../../common/LogoutButton";
+import {Moon, Sun} from "tabler-icons-react";
 
 interface UmbreonHeaderProps {
     navbarOpened: boolean
@@ -16,10 +16,10 @@ const UmbreonHeader = ({navbarOpened, setNavbarOpened}: UmbreonHeaderProps) => {
     const {isAuthenticated} = useAuth();
     const height = 60;
 
-    const darkModeToggle = colorScheme === 'dark' ? <SunIcon/> : <MoonIcon/>
+    const darkModeToggle = colorScheme === 'dark' ? <Sun/> : <Moon/>
 
     return <Header height={height} fixed>
-        <Group direction='row' align='center' position='apart' grow>
+        <Group align='center' position='apart' grow>
             <MediaQuery largerThan="sm" styles={{display: 'none'}}>
                 <Burger
                     opened={navbarOpened}

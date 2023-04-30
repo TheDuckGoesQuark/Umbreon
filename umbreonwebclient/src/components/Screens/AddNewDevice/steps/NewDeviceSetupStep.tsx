@@ -9,7 +9,7 @@ const NewDeviceSetupStep = ({dispatch}: NewDeviceSetupStepProps) => {
     // generate new key pair from server with expiry
     // download script to be put on device that uses key pair
 
-    return <Group direction='row' position='center' align='center'>
+    return <Group position='center' align='center'>
         <List listStyleType='numbered' center withPadding>
             <List.Item>
                 Follow the steps <Anchor href={"https://www.ev3dev.org/docs/getting-started/"}>here </Anchor>

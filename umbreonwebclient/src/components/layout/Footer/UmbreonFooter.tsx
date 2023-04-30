@@ -9,7 +9,7 @@ import {useAboutRoute, useLoginRoute} from "../../Routes/PublicRoutes";
 const useStyles = createStyles((theme: MantineTheme) => ({
     footer: {
         // hide footer on tiny screens
-        [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+        [theme.fn.smallerThan(theme.breakpoints.sm)]: {
             display: 'none'
         },
         paddingLeft: 20,
@@ -43,10 +43,10 @@ const UmbreonFooter = () => {
     const height = 30;
     return <Footer height={height} className={classes.footer}>
         <Group position='apart'>
-            <Group spacing='xl' position='left' align='center' direction='row'>
-                <Text>Git SHA: {process.env.REACT_APP_GIT_SHA || "local"}</Text>
+            <Group spacing='xl' position='left' align='center'>
+                <Text>Git SHA: {import.meta.env.VITE_GIT_SHA || "local"}</Text>
             </Group>
-            <Group spacing='xl' position='right' align='center' direction='row'>
+            <Group spacing='xl' position='right' align='center'>
                 {allLinks.map(link => (
                     <Anchor key={link.label} component={Link} to={link.href}>
                         {link.label}

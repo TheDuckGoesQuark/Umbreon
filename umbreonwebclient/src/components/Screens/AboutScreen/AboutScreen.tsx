@@ -1,5 +1,5 @@
 import React from "react";
-import {Anchor, Center, Group, List, Text, Title} from "@mantine/core";
+import {Anchor, Center, Group, List, Stack, Text, Title} from "@mantine/core";
 import PageLayout from "../../layout/PageLayout"
 import {Link} from "react-router-dom";
 
@@ -9,7 +9,7 @@ const AboutScreen = () => {
     return (
         <PageLayout>
             <Center>
-                <Group direction='column' position='center' align='center' sx={() => ({height: '100%', width: '40%'})}>
+                <Stack justify='center' align='center' h="100%" w="40%">
                     <Title order={titleOrders}>What</Title>
                     <Text>
                         Umbreon ={'>'} Eevee ={'>'} EV3
@@ -95,23 +95,23 @@ const AboutScreen = () => {
                         </Group>
                     </Group>
 
-                    <Group position='apart' align='center'>
-                        <Group align='center' position='center' direction='column'>
+                    <Stack justify='apart' align='center'>
+                        <Stack align='center' justify='center'>
                             <Title order={titleOrders}>Who</Title>
                             <Text>
                                 <Anchor component={Link} to='https://github.com/TheDuckGoesQuark'>This guy.</Anchor>
                             </Text>
-                        </Group>
+                        </Stack>
 
-                        <Group align='center' position='center' direction='column'>
+                        <Stack align='center' justify='center'>
                             <Title order={titleOrders}>When</Title>
                             <Text>
                                 <Anchor component={Link} to='https://github.com/TheDuckGoesQuark/Umbreon/'>Early
                                     2022.</Anchor>
                             </Text>
-                        </Group>
-                    </Group>
-                </Group>
+                        </Stack>
+                    </Stack>
+                </Stack>
             </Center>
         </PageLayout>
     )

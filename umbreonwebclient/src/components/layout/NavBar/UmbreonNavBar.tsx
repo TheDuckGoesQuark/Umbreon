@@ -1,4 +1,4 @@
-import {Button, createStyles, Group, MantineTheme, Navbar, Text, Transition} from "@mantine/core";
+import {Button, createStyles, Group, MantineTheme, Navbar, Stack, Text, Transition} from "@mantine/core";
 import {Link} from "react-router-dom";
 import {useAuth} from "../../../contexts/AuthContext";
 import React from "react";
@@ -48,7 +48,7 @@ const UmbreonNavBar = ({navbarOpened}: UmbreonNavBarProps) => {
             <Navbar style={styles} fixed position={{top: 0, left: 0}} hidden={!navbarOpened}
                     width={{sm: 200, lg: 300}} className={classes.navBar}>
                 <Navbar.Section grow mt="md" >
-                    <Group direction='column' position='center' align='self-start'>
+                    <Stack justify='center' align='self-start'>
                         {authLinks.map(link => (
                             <Button fullWidth className={classes.navButton} key={link.label} component={Link} to={link.href}>
                                 {link.label}
@@ -61,10 +61,10 @@ const UmbreonNavBar = ({navbarOpened}: UmbreonNavBarProps) => {
                             </Button>
                         ))}
 
-                    </Group>
+                    </Stack>
                 </Navbar.Section>
                 <Navbar.Section>
-                    <Text>Git SHA: {process.env.REACT_APP_GIT_SHA || "local"}</Text>
+                    <Text>Git SHA: {import.meta.env.VITE_GIT_SHA || "local"}</Text>
                 </Navbar.Section>
             </Navbar>}
     </Transition>

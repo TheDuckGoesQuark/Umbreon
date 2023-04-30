@@ -1,6 +1,6 @@
-import {PlusIcon} from '@radix-ui/react-icons'
 import {ActionIcon, Card, Center, createStyles, MantineTheme} from "@mantine/core";
 import {useAddNewDeviceRoute} from "../../../Routes/DevicesRoutes";
+import {Plus} from "tabler-icons-react";
 
 const useStyles = createStyles((theme: MantineTheme) => ({
     card: {
@@ -16,7 +16,7 @@ const AddNewDeviceCardProps = () => {
     return (<Card onClick={() => goToNewDevice()} className={classes.card}>
         <Center>
             <ActionIcon variant='filled' color='blue' size='xl'>
-                <PlusIcon/>
+                <Plus/>
             </ActionIcon>
         </Center>
     </Card>)

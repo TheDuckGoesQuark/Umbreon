@@ -1,4 +1,4 @@
-import {Button, Group, Text} from "@mantine/core";
+import {Button, Group, Stack, Text} from "@mantine/core";
 import {AddDeviceAction} from '../useAddNewDeviceReducer'
 import useRetryableOperationReducer, {
     RetryableOperationActionType,
@@ -39,10 +39,10 @@ const ConnectingDeviceStep = ({nextStepDispatch}: ConnectingNewDeviceStepProps) 
 
     const isTryingToConnect = connectingState.state === RetryableOperationStatus.PERFORMING;
 
-    return <Group direction='column' position='center' align='center'>
+    return <Stack justify='center' align='center'>
         <Text>Turn on your device and wait for WAITING message</Text>
         <Button loading={isTryingToConnect} disabled={isTryingToConnect} onClick={onClick}>Try to connect</Button>
-    </Group>
+    </Stack>
 }
 
 export default ConnectingDeviceStep;

@@ -9,11 +9,11 @@ import PublicRoutes from "./PublicRoutes";
 const AppRouter = () => {
     const {isLoading, isAuthenticated} = useAuth();
 
-    if (isLoading) return <PageLoader />
-
     const rootIndexComponent = isAuthenticated
         ? <Navigate to={`/devices`} replace/>
         : <Navigate to={`/login`} replace/>;
+
+    if (isLoading) return <PageLoader />
 
     return (<Routes>
         <Route index element={rootIndexComponent}/>

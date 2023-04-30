@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {PropsWithChildren, useEffect, useMemo, useState} from "react";
 import {
     ColorScheme,
     ColorSchemeProvider, createStyles,
@@ -17,7 +17,7 @@ export const usePageContainerStyles = createStyles((theme: MantineTheme) => ({
     },
 }));
 
-const ThemeProvider: React.FC = ({children}) => {
+const ThemeProvider: React.FC<PropsWithChildren> = ({children}) => {
     const preferredColorScheme = useColorScheme(getCookieFlag(FlagKey.DARK_MODE, 'light') ? 'dark' : 'light');
     const [colorScheme, setColorScheme] = useState<ColorScheme>(preferredColorScheme);
     const toggleColorScheme = (value?: ColorScheme) =>
@@ -41,17 +41,6 @@ const ThemeProvider: React.FC = ({children}) => {
             theme={{
                 colorScheme,
                 fontFamily: 'Open Sans, sans serif',
-                spacing: {xs: 15, sm: 20, md: 25, lg: 30, xl: 40},
-            }}
-            defaultProps={{
-                Card: (theme: MantineTheme) => ({
-                    root: {
-                        shadow: 'xl',
-                        p: 'lg',
-                        minHeight: theme.breakpoints.sm,
-                    }
-
-                }),
             }}
         >
             {children}

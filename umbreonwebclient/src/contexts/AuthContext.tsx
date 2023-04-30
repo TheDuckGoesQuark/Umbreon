@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {AppState, Auth0Provider, useAuth0} from "@auth0/auth0-react";
+import React, {PropsWithChildren, useCallback, useMemo, useState} from "react";
+import {AppState, Auth0Provider, useAuth0, User} from "@auth0/auth0-react";
 import UmbreonUser from "../models/UmbreonUser";
 import {useNavigate} from "react-router-dom";
 
@@ -39,50 +39,54 @@ const getLoginUrl = () => {
     return `${window.location.origin}/login`
 }
 
-const useOfflineProvider = () => {
-    return process.env.REACT_APP_OFFLINE_MODE === 'true';
+const shouldUseOfflineProvider = () => {
+    return import.meta.env.VITE_OFFLINE_MODE === 'true';
 }
 
-const OfflineAuthProvider: React.FC = ({children}) => {
+const OfflineAuthProvider: React.FC<PropsWithChildren> = ({children}) => {
     const [user, setUser] = useState<UmbreonUser>()
     const navigate = useNavigate();
 
-    const login = useCallback(async (redirectURI?: string) => {
+    const login = async (redirectURI?: string) => {
         setUser(OFFLINE_USER);
         navigate(redirectURI || '/login')
-    }, [navigate]);
+    }
 
-    const logout = useCallback(async (returnToUrl?: string) => {
+    const logout = async (returnToUrl?: string) => {
         setUser(undefined);
         navigate(returnToUrl || '/login')
-    }, [navigate]);
+    };
 
-    const value = useMemo(() => ({
+    const value = {
         user: user,
         isLoading: false,
         isAuthenticated: Boolean(user),
         login,
         logout
-    }), [user, login, logout]);
+    }
 
     return <AuthContext.Provider value={value}>
         {children}
     </AuthContext.Provider>
 }
 
-const Auth0ConsumingAuthProvider: React.FC = ({children}) => {
+const Auth0ConsumingAuthProvider: React.FC<PropsWithChildren> = ({children}) => {
     const auth = useAuth0<UmbreonUser>();
 
     const login = useCallback(async (redirectURI?: string) => {
         await auth.loginWithRedirect({
             appState: {returnTo: redirectURI},
-            redirectUri: getLoginUrl()
+            authorizationParams: {
+                redirect_uri: getLoginUrl()
+            }
         })
     }, [auth]);
 
     const logout = useCallback(async (returnToUrl?: string) => {
         await auth.logout({
-            returnTo: returnToUrl,
+            logoutParams: {
+                returnTo: returnToUrl,
+            }
         });
     }, [auth]);
 
@@ -99,20 +103,20 @@ const Auth0ConsumingAuthProvider: React.FC = ({children}) => {
     </AuthContext.Provider>)
 }
 
-const Auth0ProviderWithRedirect: React.FC = ({children}) => {
-    const domain = process.env.REACT_APP_AUTH0_DOMAIN || "";
-    const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID || "";
+const Auth0ProviderWithRedirect: React.FC<PropsWithChildren> = ({children}) => {
+    const domain = import.meta.env.VITE_AUTH0_DOMAIN || "";
+    const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID || "";
 
     const navigate = useNavigate();
 
-    const onRedirectCallback = useCallback((appState: AppState) => {
+    const onRedirectCallback = useCallback((appState?: AppState) => {
         navigate(appState?.returnTo || window.location.pathname);
     }, [navigate]);
 
     return (<Auth0Provider
         domain={domain}
         clientId={clientId}
-        redirectUri={window.location.origin}
+        authorizationParams={{redirect_uri: window.location.origin}}
         onRedirectCallback={onRedirectCallback}
         useRefreshTokens={true}
         cacheLocation="localstorage"
@@ -121,8 +125,8 @@ const Auth0ProviderWithRedirect: React.FC = ({children}) => {
     </Auth0Provider>)
 }
 
-const AuthProvider: React.FC = ({children}) => {
-    if (useOfflineProvider()) {
+const AuthProvider: React.FC<PropsWithChildren> = ({children}) => {
+    if (shouldUseOfflineProvider()) {
         return <OfflineAuthProvider>
             {children}
         </OfflineAuthProvider>

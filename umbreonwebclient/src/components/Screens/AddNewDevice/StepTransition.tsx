@@ -1,7 +1,7 @@
 import {Transition} from "@mantine/core";
-import React from "react";
+import React, {PropsWithChildren} from "react";
 
-interface StepTransitionProps {
+interface StepTransitionProps extends PropsWithChildren {
     activeStep: boolean,
     onExited: () => void,
     isTransitioning: boolean,

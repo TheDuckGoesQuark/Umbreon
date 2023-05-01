@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {PropsWithChildren, useEffect, useState} from "react";
 import {Outlet} from "react-router-dom";
 import {AppShell, Container, createStyles, MantineTheme} from "@mantine/core";
 import UmbreonHeader from "./Header/UmbreonHeader";
@@ -12,7 +12,7 @@ const useStyles = createStyles((theme: MantineTheme) => ({
     },
 }));
 
-const PageLayout: React.FC = ({children}) => {
+const PageLayout: React.FC<PropsWithChildren> = ({children}) => {
     const {classes} = useStyles();
 
     const [navbarOpened, setNavbarOpened] = useState<boolean>(false);

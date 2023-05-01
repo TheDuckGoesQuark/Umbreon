@@ -1,4 +1,5 @@
 #!/bin/bash
+set -eo
 
 pushd ../umbreonwebclient || exit
 yarn build
@@ -7,6 +8,7 @@ popd || exit
 pushd ../umbreonbot || exit
 cross build --release --target armv5te-unknown-linux-gnueabi
 cp target/armv5te-unknown-linux-gnueabi/release/umbreonbot ../umbreonserver/assets/
+cp -r ../umbreonwebclient/build/ ../umbreonserver/assets/
 popd || exit
 
 echo "Building docker image"

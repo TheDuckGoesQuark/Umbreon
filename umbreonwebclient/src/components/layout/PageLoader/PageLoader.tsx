@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {PropsWithChildren} from 'react';
 import {LoadingOverlay} from "@mantine/core";
 
-const PageLoader:React.FC = ({children}) => {
+const PageLoader:React.FC<PropsWithChildren> = ({children}) => {
     if (children) {
         return <React.Suspense fallback={<LoadingOverlay visible />}>{children}</React.Suspense>
     } else {

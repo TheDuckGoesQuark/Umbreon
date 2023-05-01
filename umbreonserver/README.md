@@ -21,3 +21,14 @@ The robot then connects to the server using that API key whenever it is turned o
 connected and online.
 
 The user can then begin sending commands to that robot and see the values output from it's sensors.
+
+### Dev Setup
+Techs needed:
+* Docker
+* Rust
+  * Cargo
+  * Cross
+* Golang
+* Vite
+
+Follow instructions [here](https://github.com/pixix4/ev3dev-lang-rust) to get ev3dev set up

@@ -16,8 +16,7 @@ const LoginScreen = () => {
         await auth.login(location.state ? (location.state as LocationState).returnTo : undefined);
     }, [auth, location.state]);
 
-    return (
-        <PageLayout>
+    return (<PageLayout>
             <Center>
                 <Button onClick={onLogin}>Login</Button>
             </Center>

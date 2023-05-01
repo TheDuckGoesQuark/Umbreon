@@ -1,9 +1,9 @@
-import {Component} from "react";
+import {Component, PropsWithChildren} from "react";
 import {Button, Group, Stack} from "@mantine/core";
 
 type ErrorBoundaryProps = {
     baseMessage: string,
-}
+} & PropsWithChildren
 
 type ErrorBoundaryState = {
     error?: Error,

@@ -2,7 +2,6 @@ import React, {PropsWithChildren, useEffect, useState} from "react";
 import {Outlet} from "react-router-dom";
 import {AppShell, Container, createStyles, MantineTheme} from "@mantine/core";
 import UmbreonHeader from "./Header/UmbreonHeader";
-import UmbreonFooter from "./Footer/UmbreonFooter";
 import ErrorBoundary from "../common/ErrorBoundary";
 import UmbreonNavBar from "./NavBar/UmbreonNavBar";
 
@@ -19,10 +18,10 @@ const PageLayout: React.FC<PropsWithChildren> = ({children}) => {
 
     return (<AppShell
         fixed
-        navbarOffsetBreakpoint={1000000}
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
         header={<UmbreonHeader navbarOpened={navbarOpened} setNavbarOpened={setNavbarOpened}/>}
         navbar={<UmbreonNavBar navbarOpened={navbarOpened}/>}
-        footer={<UmbreonFooter/>}
     >
         <ErrorBoundary baseMessage="Something went wrong: " key='root-error-boundary'>
             <Container h="100%" fluid>

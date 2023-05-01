@@ -19,7 +19,7 @@ const UmbreonHeader = ({navbarOpened, setNavbarOpened}: UmbreonHeaderProps) => {
     const darkModeToggle = colorScheme === 'dark' ? <Sun/> : <Moon/>
 
     return <Header height={height} fixed>
-        <Group align='center' position='apart' grow h="100%" px="sm">
+        <Group align='center' position='apart' h="100%" px="sm" noWrap>
             <MediaQuery largerThan="sm" styles={{display: 'none'}}>
                 <Burger
                     opened={navbarOpened}
@@ -28,26 +28,24 @@ const UmbreonHeader = ({navbarOpened, setNavbarOpened}: UmbreonHeaderProps) => {
                 />
             </MediaQuery>
 
-            <MediaQuery smallerThan="sm" styles={{display: 'none'}}>
-                <div>
-                {isAuthenticated && <UmbreonAvatar />}
-                </div>
+            <MediaQuery largerThan="sm" styles={{textAlign: 'left'}}>
+                <Title align='right' style={{flexGrow: 1}}>
+                    Umbreon.lol
+                </Title>
             </MediaQuery>
 
-            <Title align='center'>
-                Umbreon.lol
-            </Title>
-
-            <Group noWrap align='center' position='right'>
-                <MediaQuery smallerThan="sm" styles={{display: 'none'}}>
-                    <div>
-                        {isAuthenticated && <LogoutButton/>}
-                    </div>
-                </MediaQuery>
-                <ActionIcon onClick={() => toggleColorScheme()}>
-                    {darkModeToggle}
-                </ActionIcon>
-            </Group>
+            <MediaQuery smallerThan="sm" styles={{display: 'none'}}>
+                <Group noWrap align='center' position='right'>
+                    <MediaQuery smallerThan="sm" styles={{display: 'none'}}>
+                        <div>
+                            {isAuthenticated && <LogoutButton/>}
+                        </div>
+                    </MediaQuery>
+                    <ActionIcon onClick={() => toggleColorScheme()}>
+                        {darkModeToggle}
+                    </ActionIcon>
+                </Group>
+            </MediaQuery>
         </Group>
 
     </Header>

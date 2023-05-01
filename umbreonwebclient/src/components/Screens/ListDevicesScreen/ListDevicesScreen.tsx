@@ -3,11 +3,11 @@ import DeviceCard, {DeviceCardProps, DeviceState} from "./Cards/DeviceCard";
 import {Center, Container, SimpleGrid} from "@mantine/core";
 import ev3 from '../../../assets/ev3.jpeg';
 import AddNewCard from "./Cards/AddNewCard";
-import {usePageContainerStyles} from "../../../contexts/ThemeContext";
+import {useTheme} from "../../../contexts/ThemeContext";
 
 const ListDevicesScreen = () => {
-    const {classes} = usePageContainerStyles()
     const imgSrc = ev3;
+    const theme = useTheme()
 
     let devices: DeviceCardProps[] = [
         {
@@ -37,23 +37,25 @@ const ListDevicesScreen = () => {
     ];
     devices = devices.concat(devices)
 
-    return <Container className={classes.container}>
-        <SimpleGrid
-        cols={4}
-        breakpoints={[
-            {maxWidth: 'xs', cols: 1},
-            {maxWidth: 'sm', cols: 2},
-            {maxWidth: 'md', cols: 3}
-        ]}
-    >
-        {devices.map((device, index) => {
-            return <DeviceCard key={index} {...device} />
-        })}
+    return <Container fluid h="100%">
+        <Center>
+            <SimpleGrid cols={5} maw={theme.breakpoints.xl} spacing="md" breakpoints={[
+                {maxWidth: 'xs', cols: 1},
+                {maxWidth: 'sm', cols: 2},
+                {maxWidth: 'md', cols: 3},
+                {maxWidth: 'lg', cols: 4},
+                {maxWidth: 'xl', cols: 5},
+            ]}
+            >
+                {devices.map((device, index) => {
+                    return <DeviceCard key={index} {...device} />
+                })}
 
-        <Center m='xl'>
-            <AddNewCard/>
+                <Center m='xl'>
+                    <AddNewCard/>
+                </Center>
+            </SimpleGrid>
         </Center>
-    </SimpleGrid>
     </Container>
 };
 

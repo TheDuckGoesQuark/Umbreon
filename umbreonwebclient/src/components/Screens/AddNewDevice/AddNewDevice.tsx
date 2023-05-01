@@ -10,7 +10,6 @@ import ConnectingDeviceStep from "./steps/ConnectingDeviceStep";
 import SuccessStep from "./steps/SuccessStep";
 import ExistingDeviceSetupStep from "./steps/ExistingDeviceSetupStep";
 import StepIndicator from "./StepIndicator";
-import {usePageContainerStyles} from "../../../contexts/ThemeContext";
 
 const stateToStepNumber = (state: AddDeviceState): number => {
     switch (state) {
@@ -30,7 +29,6 @@ const stateToStepNumber = (state: AddDeviceState): number => {
 }
 
 const AddNewDevice = () => {
-    const {classes} = usePageContainerStyles()
     const [state, dispatch] = useAddNewDeviceReducer();
     const [isTransitioning, startTransition, endTransition] = useStepTransitions();
 
@@ -47,8 +45,8 @@ const AddNewDevice = () => {
     // start device
     // try connect
 
-    return <Stack align='center' justify='space-between'>
-        <Container className={classes.container}>
+    return <Stack align='center' justify='space-between' h="100%">
+        <Center style={{flexGrow: 1}} w="100%">
             <StepTransition
                 activeStep={state === AddDeviceState.START}
                 onExited={endTransition}
@@ -84,7 +82,7 @@ const AddNewDevice = () => {
             >
                 <SuccessStep deviceId={"abc"}/>
             </StepTransition>
-        </Container>
+        </Center>
         <Container mt='md'>
             <Center>
                 {showGoBackButton

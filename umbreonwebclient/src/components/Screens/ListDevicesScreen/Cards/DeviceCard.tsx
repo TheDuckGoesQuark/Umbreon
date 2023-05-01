@@ -13,6 +13,7 @@ import moment from "moment";
 import {useControlDeviceRoute, useManageDeviceRoute} from "../../../Routes/DevicesRoutes";
 import React from "react";
 import {Refresh, Settings} from "tabler-icons-react";
+import {useCardStyles} from "./AddNewCard";
 
 export enum DeviceState {
     Offline,
@@ -29,8 +30,10 @@ export interface DeviceCardProps {
     deviceLastConnected: Date,
 }
 
+
 const DeviceCard = ({imgSrc, imgAlt, deviceName, deviceId, deviceState, deviceLastConnected}: DeviceCardProps) => {
     const theme = useMantineTheme();
+    const {classes} = useCardStyles();
     const goToManageDeviceScreen = useManageDeviceRoute(deviceId);
     const goToControlDeviceScreen = useControlDeviceRoute(deviceId);
 
@@ -44,7 +47,7 @@ const DeviceCard = ({imgSrc, imgAlt, deviceName, deviceId, deviceState, deviceLa
 
     const lastConnectedString = moment(deviceLastConnected).fromNow()
 
-    return (<Card>
+    return (<Card withBorder radius="md" shadow="xl" w="100%" className={classes.card}>
         <Card.Section>
             <AspectRatio ratio={800 / 426}>
                 <Image src={imgSrc} alt={imgAlt}/>

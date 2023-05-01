@@ -6,15 +6,7 @@ import UmbreonFooter from "./Footer/UmbreonFooter";
 import ErrorBoundary from "../common/ErrorBoundary";
 import UmbreonNavBar from "./NavBar/UmbreonNavBar";
 
-const useStyles = createStyles((theme: MantineTheme) => ({
-    container: {
-        minHeight: '100%',
-    },
-}));
-
 const PageLayout: React.FC<PropsWithChildren> = ({children}) => {
-    const {classes} = useStyles();
-
     const [navbarOpened, setNavbarOpened] = useState<boolean>(false);
 
     useEffect(() => {
@@ -33,7 +25,7 @@ const PageLayout: React.FC<PropsWithChildren> = ({children}) => {
         footer={<UmbreonFooter/>}
     >
         <ErrorBoundary baseMessage="Something went wrong: " key='root-error-boundary'>
-            <Container className={classes.container} fluid>
+            <Container h="100%" fluid>
                 <Outlet/>
                 {children}
             </Container>

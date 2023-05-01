@@ -19,7 +19,7 @@ const UmbreonHeader = ({navbarOpened, setNavbarOpened}: UmbreonHeaderProps) => {
     const darkModeToggle = colorScheme === 'dark' ? <Sun/> : <Moon/>
 
     return <Header height={height} fixed>
-        <Group align='center' position='apart' grow>
+        <Group align='center' position='apart' grow h="100%" px="sm">
             <MediaQuery largerThan="sm" styles={{display: 'none'}}>
                 <Burger
                     opened={navbarOpened}

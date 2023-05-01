@@ -10,13 +10,6 @@ import {
 import {useColorScheme} from "@mantine/hooks";
 import {FlagKey, getCookieFlag, setCookieFlag} from "../utils/cookieFlag";
 
-export const usePageContainerStyles = createStyles((theme: MantineTheme) => ({
-    container: {
-        maxWidth: theme.breakpoints.sm,
-        margin: 'auto',
-    },
-}));
-
 const ThemeProvider: React.FC<PropsWithChildren> = ({children}) => {
     const preferredColorScheme = useColorScheme(getCookieFlag(FlagKey.DARK_MODE, 'light') ? 'dark' : 'light');
     const [colorScheme, setColorScheme] = useState<ColorScheme>(preferredColorScheme);
@@ -40,7 +33,17 @@ const ThemeProvider: React.FC<PropsWithChildren> = ({children}) => {
             withNormalizeCSS
             theme={{
                 colorScheme,
-                fontFamily: 'Open Sans, sans serif',
+                fontFamily: 'Raleway, Open Sans, sans serif',
+                components: {
+                    Card: {
+                        defaultProps: {
+                            withBorder: true,
+                            radius:"md",
+                            shadow:"md",
+                            w:"100%"
+                        }
+                    }
+                }
             }}
         >
             {children}

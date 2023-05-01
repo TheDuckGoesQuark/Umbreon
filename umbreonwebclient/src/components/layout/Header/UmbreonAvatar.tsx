@@ -18,7 +18,7 @@ const UmbreonAvatar = () => {
             alt='avatar'
             src={user?.picture}
             radius='lg'
-            size='lg'
+            size='md'
         />
     </ActionIcon>
 }

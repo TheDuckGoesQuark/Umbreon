@@ -35,6 +35,11 @@ const ThemeProvider: React.FC<PropsWithChildren> = ({children}) => {
                 colorScheme,
                 fontFamily: 'Raleway, Open Sans, sans serif',
                 components: {
+                    AppShell: {
+                        defaultProps: {
+                            bg: colorScheme === "dark" ? "gray.9" : "red.9"
+                        }
+                    },
                     Card: {
                         defaultProps: {
                             withBorder: true,

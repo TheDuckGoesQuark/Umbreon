@@ -49,7 +49,7 @@ const UmbreonNavBar = ({navbarOpened}: UmbreonNavBarProps) => {
 
     return <Transition transition='slide-right' mounted={navbarOpened} duration={500}>
         {(styles) =>
-            <Navbar style={styles} fixed hidden={!navbarOpened}
+            <Navbar style={styles} hidden={!navbarOpened}
                     width={{sm: 200, lg: 300}}>
                 <Navbar.Section grow pt="md">
                     {authLinks.map(link => (

@@ -1,20 +1,12 @@
 import React, {PropsWithChildren, useEffect, useState} from "react";
 import {Outlet} from "react-router-dom";
-import {AppShell, Container, createStyles, MantineTheme} from "@mantine/core";
+import {AppShell, Container, createStyles, MANTINE_SIZES, MantineTheme} from "@mantine/core";
 import UmbreonHeader from "./Header/UmbreonHeader";
 import ErrorBoundary from "../common/ErrorBoundary";
 import UmbreonNavBar from "./NavBar/UmbreonNavBar";
 
 const PageLayout: React.FC<PropsWithChildren> = ({children}) => {
-    const [navbarOpened, setNavbarOpened] = useState<boolean>(false);
-
-    useEffect(() => {
-        const closeNav = () => {
-            setNavbarOpened(false);
-        }
-        window.addEventListener("resize", closeNav);
-        return () => window.removeEventListener("resize", closeNav);
-    }, [setNavbarOpened])
+    const [navbarOpened, setNavbarOpened] = useState<boolean>(true);
 
     return (<AppShell
         fixed

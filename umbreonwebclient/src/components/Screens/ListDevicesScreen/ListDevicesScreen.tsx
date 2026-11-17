@@ -1,41 +1,45 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import DeviceCard, {DeviceCardProps, DeviceState} from "./Cards/DeviceCard";
 import {Center, Container, SimpleGrid} from "@mantine/core";
 import ev3 from '../../../assets/ev3.jpeg';
 import AddNewCard from "./Cards/AddNewCard";
 import {useTheme} from "../../../contexts/ThemeContext";
+import {DeviceSummary} from "../../../device/protocol";
+
+const DEVICE_LIST_POLL_INTERVAL_MS = 3000;
 
 const ListDevicesScreen = () => {
     const imgSrc = ev3;
     const theme = useTheme()
 
-    let devices: DeviceCardProps[] = [
-        {
-            deviceId: "123",
-            deviceLastConnected: new Date(),
-            deviceName: "abc",
-            deviceState: DeviceState.Available,
-            imgAlt: "Device",
-            imgSrc
-        },
-        {
-            deviceId: "345",
-            deviceLastConnected: new Date(1234),
-            deviceName: "def",
-            deviceState: DeviceState.Busy,
-            imgAlt: "Device",
-            imgSrc
-        },
-        {
-            deviceId: "567",
-            deviceLastConnected: new Date(978),
-            deviceName: "ghi",
-            deviceState: DeviceState.Offline,
-            imgAlt: "Device",
-            imgSrc
-        },
-    ];
-    devices = devices.concat(devices)
+    const [summaries, setSummaries] = useState<DeviceSummary[]>([]);
+
+    useEffect(() => {
+        let isDisposed = false;
+        const refresh = () => fetch('/api/devices')
+            .then((response) => response.json())
+            .then((devices: DeviceSummary[]) => {
+                if (!isDisposed) {
+                    setSummaries(devices);
+                }
+            })
+            .catch(() => undefined);
+        refresh();
+        const poll = window.setInterval(refresh, DEVICE_LIST_POLL_INTERVAL_MS);
+        return () => {
+            isDisposed = true;
+            window.clearInterval(poll);
+        };
+    }, []);
+
+    const devices: DeviceCardProps[] = summaries.map((summary) => ({
+        deviceId: summary.id,
+        deviceName: summary.id,
+        deviceState: summary.online ? DeviceState.Available : DeviceState.Offline,
+        deviceLastConnected: summary.last_seen_ms === null ? undefined : new Date(summary.last_seen_ms),
+        imgAlt: "Device",
+        imgSrc,
+    }));
 
     return <Container fluid h="100%">
         <Center>
@@ -47,8 +51,8 @@ const ListDevicesScreen = () => {
                 {maxWidth: 'xl', cols: 5},
             ]}
             >
-                {devices.map((device, index) => {
-                    return <DeviceCard key={index} {...device} />
+                {devices.map((device) => {
+                    return <DeviceCard key={device.deviceId} {...device} />
                 })}
 
                 <Center m='xl'>

@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 import {Command, DeviceEvent, Telemetry} from "./protocol";
+import useDeviceApi from "./useDeviceApi";
 
 const RECONNECT_DELAY_MS = 2000;
 
@@ -11,12 +12,13 @@ export interface DeviceConnection {
     send: (command: Command) => void,
 }
 
-const controlSocketUrl = (deviceId: string) => {
+const controlSocketUrl = (deviceId: string, ticket: string) => {
     const scheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
-    return `${scheme}://${window.location.host}/ws/control/${encodeURIComponent(deviceId)}`;
+    return `${scheme}://${window.location.host}/ws/control/${encodeURIComponent(deviceId)}?ticket=${ticket}`;
 }
 
 const useDeviceConnection = (deviceId: string): DeviceConnection => {
+    const {createControlTicket} = useDeviceApi();
     const socketRef = useRef<WebSocket>();
     const [isServerConnected, setIsServerConnected] = useState(false);
     const [isBotOnline, setIsBotOnline] = useState(false);
@@ -27,8 +29,24 @@ const useDeviceConnection = (deviceId: string): DeviceConnection => {
         let reconnectTimer: number | undefined;
         let isDisposed = false;
 
-        const connect = () => {
-            const socket = new WebSocket(controlSocketUrl(deviceId));
+        const retryLater = () => {
+            if (!isDisposed) {
+                reconnectTimer = window.setTimeout(connect, RECONNECT_DELAY_MS);
+            }
+        };
+
+        const connect = async () => {
+            let ticket: string;
+            try {
+                ticket = await createControlTicket(deviceId);
+            } catch {
+                retryLater();
+                return;
+            }
+            if (isDisposed) {
+                return;
+            }
+            const socket = new WebSocket(controlSocketUrl(deviceId, ticket));
             socketRef.current = socket;
 
             socket.onopen = () => setIsServerConnected(true);
@@ -52,9 +70,7 @@ const useDeviceConnection = (deviceId: string): DeviceConnection => {
             socket.onclose = () => {
                 setIsServerConnected(false);
                 setIsBotOnline(false);
-                if (!isDisposed) {
-                    reconnectTimer = window.setTimeout(connect, RECONNECT_DELAY_MS);
-                }
+                retryLater();
             };
         };
         connect();
@@ -64,7 +80,7 @@ const useDeviceConnection = (deviceId: string): DeviceConnection => {
             window.clearTimeout(reconnectTimer);
             socketRef.current?.close();
         };
-    }, [deviceId]);
+    }, [deviceId, createControlTicket]);
 
     const send = useCallback((command: Command) => {
         const socket = socketRef.current;

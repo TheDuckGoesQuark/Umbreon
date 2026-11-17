@@ -14,8 +14,14 @@ export type Telemetry = Extract<DeviceEvent, { type: 'telemetry' }>;
 
 export interface DeviceSummary {
     id: string,
+    name: string,
     online: boolean,
     last_seen_ms: number | null,
+}
+
+export interface CreatedDevice {
+    device: DeviceSummary,
+    startup_script: string,
 }
 
 // Must stay well inside umbreonproto's DRIVE_TIMEOUT_MS, or the bot stops mid-drive.

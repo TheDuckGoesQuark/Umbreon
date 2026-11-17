@@ -5,6 +5,7 @@ import ev3 from '../../../assets/ev3.jpeg';
 import AddNewCard from "./Cards/AddNewCard";
 import {useTheme} from "../../../contexts/ThemeContext";
 import {DeviceSummary} from "../../../device/protocol";
+import useDeviceApi from "../../../device/useDeviceApi";
 
 const DEVICE_LIST_POLL_INTERVAL_MS = 3000;
 
@@ -12,13 +13,13 @@ const ListDevicesScreen = () => {
     const imgSrc = ev3;
     const theme = useTheme()
 
+    const {listDevices} = useDeviceApi();
     const [summaries, setSummaries] = useState<DeviceSummary[]>([]);
 
     useEffect(() => {
         let isDisposed = false;
-        const refresh = () => fetch('/api/devices')
-            .then((response) => response.json())
-            .then((devices: DeviceSummary[]) => {
+        const refresh = () => listDevices()
+            .then((devices) => {
                 if (!isDisposed) {
                     setSummaries(devices);
                 }
@@ -30,11 +31,11 @@ const ListDevicesScreen = () => {
             isDisposed = true;
             window.clearInterval(poll);
         };
-    }, []);
+    }, [listDevices]);
 
     const devices: DeviceCardProps[] = summaries.map((summary) => ({
         deviceId: summary.id,
-        deviceName: summary.id,
+        deviceName: summary.name,
         deviceState: summary.online ? DeviceState.Available : DeviceState.Offline,
         deviceLastConnected: summary.last_seen_ms === null ? undefined : new Date(summary.last_seen_ms),
         imgAlt: "Device",

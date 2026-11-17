@@ -8,7 +8,10 @@ use std::{
     time::{Duration, Instant},
 };
 
-use tungstenite::{stream::MaybeTlsStream, Error as SocketError, Message, WebSocket};
+use tungstenite::{
+    client::IntoClientRequest, http::header::AUTHORIZATION, stream::MaybeTlsStream,
+    Error as SocketError, Message, WebSocket,
+};
 use umbreonproto::{to_json, BotEvent, Command, DRIVE_TIMEOUT_MS};
 
 use hardware::{Ev3, Hardware, Simulated};
@@ -18,12 +21,16 @@ const TELEMETRY_INTERVAL: Duration = Duration::from_millis(250);
 const RECONNECT_DELAY: Duration = Duration::from_secs(2);
 
 fn main() {
-    let server = env::var("UMBREON_SERVER").unwrap_or_else(|_| "ws://localhost:3000".into());
-    let Ok(device_id) = env::var("UMBREON_DEVICE_ID") else {
-        eprintln!("UMBREON_DEVICE_ID is not set");
+    let server = env::var("UMBREON_SERVER").unwrap_or_else(|_| "http://localhost:3000".into());
+    let (Ok(device_id), Ok(token)) = (env::var("UMBREON_DEVICE_ID"), env::var("UMBREON_TOKEN"))
+    else {
+        eprintln!("UMBREON_DEVICE_ID and UMBREON_TOKEN must be set");
         std::process::exit(2);
     };
-    let url = format!("{}/ws/bot/{device_id}", server.trim_end_matches('/'));
+    let url = format!(
+        "{}/ws/bot/{device_id}",
+        server.trim_end_matches('/').replacen("http", "ws", 1)
+    );
 
     let mut hardware: Box<dyn Hardware> = if env::var("UMBREON_SIM").is_ok() {
         Box::new(Simulated::default())
@@ -39,7 +46,7 @@ fn main() {
 
     loop {
         println!("Connecting to {url}");
-        if let Err(error) = run_session(&url, hardware.as_mut()) {
+        if let Err(error) = run_session(&url, &token, hardware.as_mut()) {
             eprintln!("Session ended: {error}");
         }
         if let Err(error) = hardware.stop() {
@@ -49,8 +56,13 @@ fn main() {
     }
 }
 
-fn run_session(url: &str, hardware: &mut dyn Hardware) -> Result<(), String> {
-    let (mut socket, _) = tungstenite::connect(url).map_err(|error| error.to_string())?;
+fn run_session(url: &str, token: &str, hardware: &mut dyn Hardware) -> Result<(), String> {
+    let mut request = url.into_client_request().map_err(|error| error.to_string())?;
+    let bearer = format!("Bearer {token}")
+        .parse()
+        .map_err(|_| "UMBREON_TOKEN is not a valid header value".to_string())?;
+    request.headers_mut().insert(AUTHORIZATION, bearer);
+    let (mut socket, _) = tungstenite::connect(request).map_err(|error| error.to_string())?;
     // A short read timeout turns the blocking socket into the loop's clock.
     if let MaybeTlsStream::Plain(stream) = socket.get_ref() {
         stream

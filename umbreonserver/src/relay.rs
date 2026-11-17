@@ -1,11 +1,9 @@
 use std::{
     collections::HashMap,
     sync::{Arc, Mutex},
-    time::{SystemTime, UNIX_EPOCH},
 };
 
 use axum::extract::ws::{Message, WebSocket};
-use serde::Serialize;
 use tokio::sync::{broadcast, mpsc};
 use umbreonproto::{to_json, BotEvent, Command, ServerEvent};
 
@@ -18,7 +16,6 @@ pub struct Relay {
 struct Device {
     bot: Option<BotLink>,
     events: broadcast::Sender<String>,
-    last_seen_ms: Option<u64>,
     hello: Option<String>,
 }
 
@@ -27,26 +24,17 @@ struct BotLink {
     commands: mpsc::UnboundedSender<Command>,
 }
 
-#[derive(Serialize)]
-pub struct DeviceSummary {
-    id: String,
-    online: bool,
-    last_seen_ms: Option<u64>,
-}
-
 impl Relay {
-    pub fn devices(&self) -> Vec<DeviceSummary> {
-        let devices = self.devices.lock().unwrap();
-        let mut summaries: Vec<_> = devices
-            .iter()
-            .map(|(id, device)| DeviceSummary {
-                id: id.clone(),
-                online: device.bot.is_some(),
-                last_seen_ms: device.last_seen_ms,
-            })
-            .collect();
-        summaries.sort_by(|a, b| a.id.cmp(&b.id));
-        summaries
+    pub fn is_online(&self, device_id: &str) -> bool {
+        self.devices
+            .lock()
+            .unwrap()
+            .get(device_id)
+            .is_some_and(|device| device.bot.is_some())
+    }
+
+    pub fn forget(&self, device_id: &str) {
+        self.devices.lock().unwrap().remove(device_id);
     }
 
     pub async fn serve_bot(self, device_id: String, mut socket: WebSocket) {
@@ -60,7 +48,6 @@ impl Relay {
             // A reconnecting bot replaces its stale link; dropping the old
             // sender ends the old socket's loop.
             device.bot = Some(BotLink { connection, commands });
-            device.last_seen_ms = Some(now_ms());
             device.events.clone()
         });
         tracing::info!(device_id, "bot connected");
@@ -82,7 +69,6 @@ impl Relay {
                         continue;
                     };
                     self.with_device(&device_id, |device| {
-                        device.last_seen_ms = Some(now_ms());
                         if matches!(event, BotEvent::Hello { .. }) {
                             device.hello = Some(text.to_string());
                         }
@@ -158,16 +144,8 @@ impl Relay {
             .or_insert_with(|| Device {
                 bot: None,
                 events: broadcast::channel(64).0,
-                last_seen_ms: None,
                 hello: None,
             });
         action(device)
     }
-}
-
-fn now_ms() -> u64 {
-    SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map(|elapsed| elapsed.as_millis() as u64)
-        .unwrap_or(0)
 }

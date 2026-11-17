@@ -5,7 +5,7 @@
       "name": "server",
       "runtimeExecutable": "cargo",
       "runtimeArgs": ["run", "-p", "umbreonserver"],
-      "env": {"PORT": "8080"},
+      "env": {"PORT": "8080", "PUBLIC_URL": "http://localhost:8080", "UMBREON_DEV_USER": "dev"},
       "port": 8080
     },
     {

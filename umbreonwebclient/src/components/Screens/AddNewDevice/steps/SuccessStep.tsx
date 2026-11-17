@@ -1,6 +1,6 @@
 import {Group, Stack, Text} from "@mantine/core";
 import {useEffect} from "react";
-import {useManageDeviceRoute} from "../../../Routes/DevicesRoutes";
+import {useControlDeviceRoute} from "../../../Routes/DevicesRoutes";
 
 const DELAY_BEFORE_REDIRECT_MS = 1000;
 
@@ -9,15 +9,15 @@ interface SuccessStepProps {
 }
 
 const SuccessStep = ({deviceId}: SuccessStepProps) => {
-    const goToManageDevice = useManageDeviceRoute(deviceId);
+    const goToControlDevice = useControlDeviceRoute(deviceId);
 
     useEffect(() => {
         const timeout = setTimeout(()=>{
-            goToManageDevice();
+            goToControlDevice();
         }, DELAY_BEFORE_REDIRECT_MS)
 
         return ()=>clearTimeout(timeout);
-    }, [goToManageDevice]);
+    }, [goToControlDevice]);
 
     return <Stack  justify='center' align='center'>
         <Text>Connected Successfully!</Text>

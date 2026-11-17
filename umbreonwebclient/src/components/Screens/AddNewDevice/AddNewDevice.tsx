@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 
 import {Button, Center, Container, Space, Stack} from "@mantine/core";
 import useAddNewDeviceReducer, {AddDeviceAction, AddDeviceState} from "./useAddNewDeviceReducer";
@@ -10,6 +10,7 @@ import ConnectingDeviceStep from "./steps/ConnectingDeviceStep";
 import SuccessStep from "./steps/SuccessStep";
 import ExistingDeviceSetupStep from "./steps/ExistingDeviceSetupStep";
 import StepIndicator from "./StepIndicator";
+import {CreatedDevice} from "../../../device/protocol";
 
 const stateToStepNumber = (state: AddDeviceState): number => {
     switch (state) {
@@ -31,6 +32,7 @@ const stateToStepNumber = (state: AddDeviceState): number => {
 const AddNewDevice = () => {
     const [state, dispatch] = useAddNewDeviceReducer();
     const [isTransitioning, startTransition, endTransition] = useStepTransitions();
+    const [createdDevice, setCreatedDevice] = useState<CreatedDevice>();
 
     const changeStep = useCallback((action: AddDeviceAction) => {
         dispatch(action);
@@ -38,12 +40,6 @@ const AddNewDevice = () => {
     }, [dispatch, startTransition]);
 
     const showGoBackButton = state !== AddDeviceState.START;
-
-    // to add device that's been set up before
-    // ask for device key pair code
-
-    // start device
-    // try connect
 
     return <Stack align='center' justify='space-between' h="100%">
         <Center style={{flexGrow: 1}} w="100%">
@@ -59,7 +55,7 @@ const AddNewDevice = () => {
                 onExited={endTransition}
                 isTransitioning={isTransitioning}
             >
-                <NewDeviceSetupStep dispatch={changeStep}/>
+                <NewDeviceSetupStep dispatch={changeStep} createdDevice={createdDevice} onCreated={setCreatedDevice}/>
             </StepTransition>
             <StepTransition
                 activeStep={state === AddDeviceState.EXISTING_DEVICE_SETUP}
@@ -73,14 +69,19 @@ const AddNewDevice = () => {
                 onExited={endTransition}
                 isTransitioning={isTransitioning}
             >
-                <ConnectingDeviceStep nextStepDispatch={changeStep}/>
+                <ConnectingDeviceStep
+                    deviceId={createdDevice?.device.id}
+                    isActive={state === AddDeviceState.START_NEW_DEVICE}
+                    nextStepDispatch={changeStep}
+                />
             </StepTransition>
             <StepTransition
                 activeStep={state === AddDeviceState.SUCCESS}
                 onExited={endTransition}
                 isTransitioning={isTransitioning}
             >
-                <SuccessStep deviceId={"abc"}/>
+                {state === AddDeviceState.SUCCESS && createdDevice &&
+                    <SuccessStep deviceId={createdDevice.device.id}/>}
             </StepTransition>
         </Center>
         <Container mt='md'>

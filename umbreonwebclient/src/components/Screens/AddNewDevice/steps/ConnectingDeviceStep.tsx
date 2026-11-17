@@ -1,47 +1,36 @@
-import {Button, Group, Stack, Text} from "@mantine/core";
+import {Loader, Stack, Text} from "@mantine/core";
 import {AddDeviceAction} from '../useAddNewDeviceReducer'
-import useRetryableOperationReducer, {
-    RetryableOperationActionType,
-    RetryableOperationStatus
-} from "../../../common/useRetryableOperationReducer";
-import {useCallback, useEffect} from "react";
+import {useEffect} from "react";
+import useDeviceApi from "../../../../device/useDeviceApi";
 
 interface ConnectingNewDeviceStepProps {
+    deviceId?: string,
+    isActive: boolean,
     nextStepDispatch: (action: AddDeviceAction) => void
 }
 
-const ConnectingDeviceStep = ({nextStepDispatch}: ConnectingNewDeviceStepProps) => {
-    const [connectingState, dispatchConnectingAction] = useRetryableOperationReducer<void, void, void>();
+const ONLINE_POLL_INTERVAL_MS = 2000;
 
-    const onClick = useCallback(() => {
-        switch (connectingState.state) {
-            case RetryableOperationStatus.ERROR:
-                dispatchConnectingAction({type: RetryableOperationActionType.RETRY, parameters: connectingState.parameters})
-                break;
-            case RetryableOperationStatus.IDLE:
-                dispatchConnectingAction({type: RetryableOperationActionType.PERFORM, parameters: undefined})
-
-                // mock async
-                setTimeout(()=> {
-                    dispatchConnectingAction({type: RetryableOperationActionType.COMPLETED, parameters: undefined, result: undefined});
-                }, 1000)
-                break;
-            default:
-                break;
-        }
-    }, [connectingState, dispatchConnectingAction])
+const ConnectingDeviceStep = ({deviceId, isActive, nextStepDispatch}: ConnectingNewDeviceStepProps) => {
+    const {listDevices} = useDeviceApi();
 
     useEffect(() => {
-        if (connectingState.state === RetryableOperationStatus.COMPLETE) {
-            nextStepDispatch(AddDeviceAction.IS_CONNECTED_SUCCESSFULLY);
+        if (!isActive || !deviceId) {
+            return;
         }
-    }, [nextStepDispatch, connectingState.state]);
-
-    const isTryingToConnect = connectingState.state === RetryableOperationStatus.PERFORMING;
+        const poll = window.setInterval(async () => {
+            const devices = await listDevices().catch(() => []);
+            if (devices.some((device) => device.id === deviceId && device.online)) {
+                window.clearInterval(poll);
+                nextStepDispatch(AddDeviceAction.IS_CONNECTED_SUCCESSFULLY);
+            }
+        }, ONLINE_POLL_INTERVAL_MS);
+        return () => window.clearInterval(poll);
+    }, [isActive, deviceId, listDevices, nextStepDispatch]);
 
     return <Stack justify='center' align='center'>
-        <Text>Turn on your device and wait for WAITING message</Text>
-        <Button loading={isTryingToConnect} disabled={isTryingToConnect} onClick={onClick}>Try to connect</Button>
+        <Loader/>
+        <Text>Turn on your device. Waiting for it to connect.</Text>
     </Stack>
 }
 

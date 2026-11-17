@@ -1,7 +1,10 @@
 [package]
 name = "umbreonbot"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 [dependencies]
-ev3dev-lang-rust = "0.10.2"
+umbreonproto = { path = "../umbreonproto" }
+ev3dev-lang-rust = "0.16"
+tungstenite = "0.30"
+serde_json = "1"

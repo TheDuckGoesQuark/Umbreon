@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "server",
+      "runtimeExecutable": "cargo",
+      "runtimeArgs": ["run", "-p", "umbreonserver"],
+      "env": {"PORT": "8080", "PUBLIC_URL": "http://localhost:8080", "UMBREON_DEV_USER": "dev"},
+      "port": 8080
+    },
+    {
+      "name": "web",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd umbreonwebclient && VITE_OFFLINE_MODE=true npx vite --port 3000 --no-open"],
+      "port": 3000
+    }
+  ]
+}

@@ -27,7 +27,7 @@ export interface DeviceCardProps {
     deviceName: string,
     deviceId: string,
     deviceState: DeviceState,
-    deviceLastConnected: Date,
+    deviceLastConnected?: Date,
 }
 
 
@@ -45,7 +45,7 @@ const DeviceCard = ({imgSrc, imgAlt, deviceName, deviceId, deviceState, deviceLa
 
     const isAvailable = deviceState === DeviceState.Available;
 
-    const lastConnectedString = moment(deviceLastConnected).fromNow()
+    const lastConnectedString = deviceLastConnected ? moment(deviceLastConnected).fromNow() : 'Never'
 
     return (<Card withBorder radius="md" shadow="xl" w="100%" className={classes.card}>
         <Card.Section>

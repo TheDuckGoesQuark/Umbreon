@@ -9,6 +9,8 @@ export interface AuthContextType {
     isLoading?: boolean;
     login: (redirectURI?: string) => Promise<void>;
     logout: (returnToURL?: string) => Promise<void>;
+    // Undefined in offline mode, where the server runs with UMBREON_DEV_USER.
+    getAccessToken: () => Promise<string | undefined>;
 }
 
 const AuthContext = React.createContext<AuthContextType | undefined>(undefined);
@@ -39,6 +41,8 @@ const getLoginUrl = () => {
     return `${window.location.origin}/login`
 }
 
+const getNoAccessToken = async () => undefined;
+
 const shouldUseOfflineProvider = () => {
     return import.meta.env.VITE_OFFLINE_MODE === 'true';
 }
@@ -62,7 +66,8 @@ const OfflineAuthProvider: React.FC<PropsWithChildren> = ({children}) => {
         isLoading: false,
         isAuthenticated: Boolean(user),
         login,
-        logout
+        logout,
+        getAccessToken: getNoAccessToken,
     }
 
     return <AuthContext.Provider value={value}>
@@ -90,13 +95,17 @@ const Auth0ConsumingAuthProvider: React.FC<PropsWithChildren> = ({children}) => 
         });
     }, [auth]);
 
+    const {getAccessTokenSilently} = auth;
+    const getAccessToken = useCallback(() => getAccessTokenSilently(), [getAccessTokenSilently]);
+
     const value = useMemo(() => ({
         user: auth.user,
         isLoading: auth.isLoading,
         isAuthenticated: auth.isAuthenticated,
         login,
-        logout
-    }), [auth, login, logout]);
+        logout,
+        getAccessToken,
+    }), [auth, login, logout, getAccessToken]);
 
     return (<AuthContext.Provider value={value}>
         {children}
@@ -116,7 +125,10 @@ const Auth0ProviderWithRedirect: React.FC<PropsWithChildren> = ({children}) => {
     return (<Auth0Provider
         domain={domain}
         clientId={clientId}
-        authorizationParams={{redirect_uri: window.location.origin}}
+        authorizationParams={{
+            redirect_uri: window.location.origin,
+            audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+        }}
         onRedirectCallback={onRedirectCallback}
         useRefreshTokens={true}
         cacheLocation="localstorage"
